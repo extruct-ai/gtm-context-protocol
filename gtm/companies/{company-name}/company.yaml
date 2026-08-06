@@ -1,0 +1,87 @@
+id: company.{company-name}
+kind: company
+name:
+version: 1
+status: draft
+
+identity:
+  domain:
+  crm_id:
+
+components:
+  context:
+    id: company.{company-name}.context
+    path: ./context/context.md
+    format: markdown
+
+  events:
+    id: company.{company-name}.events
+    path: ./context/raw/events.jsonl
+    format: jsonl
+
+  messages:
+    id: company.{company-name}.messages
+    path: ./context/raw/messages.jsonl
+    format: jsonl
+
+  entities:
+    id: company.{company-name}.entities
+    path: ./context/raw/entities.jsonl
+    format: jsonl
+
+  graph:
+    id: company.{company-name}.graph
+    path: ./context/raw/graph.json
+    format: json
+
+  signals:
+    id: company.{company-name}.signals
+    path: ./research/signals.md
+    format: markdown
+
+  raw_signals:
+    id: company.{company-name}.raw-signals
+    path: ./research/raw-signals.jsonl
+    format: jsonl
+
+  distillation:
+    id: company.{company-name}.distillation
+    path: ./research/distillation.md
+    format: markdown
+
+  org_chart:
+    id: company.{company-name}.org-chart
+    path: ./org-chart/orgchart.md
+    format: markdown
+
+  people:
+    id: company.{company-name}.people
+    path: ./org-chart/people/
+    format: directory
+
+  framework:
+    id: company.{company-name}.framework
+    path: ./framework.md
+    format: markdown
+
+  engagement:
+    id: company.{company-name}.engagement
+    path: ./engagement.md
+    format: markdown
+
+  crm:
+    id: company.{company-name}.crm
+    path: ./crm.yaml
+    format: yaml
+
+links:
+  knowledge_bases: []
+  campaigns: []
+
+orchestration:
+  workflows:
+    research: []
+    context: []
+    org_chart: []
+    campaign: []
+    crm: []

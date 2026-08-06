@@ -1,0 +1,52 @@
+id: kb.{knowledge-base-name}
+kind: knowledge-base
+name:
+version: 1
+status: draft
+
+components:
+  definition:
+    id: kb.{knowledge-base-name}.definition
+    path: ./definition.md
+    format: markdown
+
+  signals:
+    id: kb.{knowledge-base-name}.signals
+    path: ./signals/
+    format: directory
+
+  product:
+    id: kb.{knowledge-base-name}.product
+    path: ./product/
+    format: directory
+
+  personas:
+    id: kb.{knowledge-base-name}.personas
+    path: ./personas/
+    format: directory
+
+  use_cases:
+    id: kb.{knowledge-base-name}.use-cases
+    path: ./use-cases/
+    format: directory
+
+  case_studies:
+    id: kb.{knowledge-base-name}.case-studies
+    path: ./case-studies/
+    format: directory
+
+  objections:
+    id: kb.{knowledge-base-name}.objections
+    path: ./objections/
+    format: directory
+
+  competitors:
+    id: kb.{knowledge-base-name}.competitors
+    path: ./competitors/
+    format: directory
+
+links:
+  campaigns: []
+
+orchestration:
+  workflows: []

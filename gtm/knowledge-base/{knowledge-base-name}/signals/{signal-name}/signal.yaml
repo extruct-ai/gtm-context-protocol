@@ -1,0 +1,21 @@
+id: signal.{knowledge-base-name}.{signal-name}
+kind: signal
+name:
+version: 1
+status: draft
+
+components:
+  definition:
+    id: signal.{knowledge-base-name}.{signal-name}.definition
+    path: ./definition.md
+    format: markdown
+
+links:
+  knowledge_base:
+    - kb.{knowledge-base-name}
+  campaigns: []
+
+orchestration:
+  detected_by: []
+  validated_by: []
+  consumed_by: []

@@ -1,0 +1,47 @@
+id: campaign.{campaign-name}
+kind: campaign
+name:
+version: 1
+status: draft
+
+components:
+  companies:
+    id: campaign.{campaign-name}.companies
+    path: ./companies.csv
+    format: csv
+
+  hypothesis:
+    id: campaign.{campaign-name}.hypothesis
+    path: ./hypothesis.md
+    format: markdown
+
+  voice:
+    id: campaign.{campaign-name}.voice
+    path: ./voice.md
+    format: markdown
+
+  text:
+    id: campaign.{campaign-name}.text
+    path: ./text.md
+    format: markdown
+
+  cadence:
+    id: campaign.{campaign-name}.cadence
+    path: ./cadence.md
+    format: markdown
+
+  knowledge:
+    id: campaign.{campaign-name}.knowledge
+    path: ./knowledge.md
+    format: markdown
+
+links:
+  knowledge_bases: []
+  signals: []
+
+orchestration:
+  workflows:
+    enrollment: []
+    research: []
+    execution: []
+    synchronization: []

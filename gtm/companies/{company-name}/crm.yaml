@@ -1,0 +1,10 @@
+id: company.{company-name}.crm
+kind: crm-state
+version: 1
+
+crm:
+  provider: # attio | pipedrive | hubspot | ...
+  record_id:
+  last_synced_at:
+
+fields: {}

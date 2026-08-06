@@ -1,0 +1,18 @@
+id: workflow.{workflow-name}
+kind: workflow
+name:
+version: 1
+status: draft
+
+trigger:
+  type: # schedule | event | manual
+  schedule:
+
+scope:
+  source:
+    asset: # e.g. campaign.{campaign-name}.companies
+
+steps:
+  - id:
+    action: # read | prompt | append | workflow
+    assets: []
