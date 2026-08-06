@@ -1,14 +1,33 @@
-# GTM Workspace — CRM Context (v0.4)
+# GTM Context Protocol
 
-A file-based GTM workspace designed to be embedded in another project and driven by agents (Claude Code, workflows, scripts). Everything is plain files: YAML for structure, Markdown for knowledge, JSONL for raw data, CSV for membership.
+A file-based GTM workspace you embed in a project and drive with agents (Claude Code, workflows, scripts). Connect this folder to your tools — CRM, sequencer, meeting recorder, enrichment — and agents orchestrate research, enrichment, copy preparation, and signal monitoring on top of it. The goal is a structure you invite your future agents into, so they don't reinvent the wheel every session.
 
-Core model:
+## What you can do with it
 
-- Every **orchestratable asset** (company, campaign, signal, knowledge base, workflow) has a **stable ID**.
-- Every asset folder describes itself through a **YAML manifest**: its files (components), relationships (links), and workflows (orchestration).
-- Files inside an asset get **component IDs** in that manifest.
-- Workflows reference **asset IDs, never paths** — paths resolve through the manifest.
-- There is **no central registry**. Each asset is self-describing; a global index would only duplicate it and go stale.
+- **Keep account context fresh** — agents pull CRM history, meetings, and emails into one living `context.md` per company.
+- **Monitor buying signals** — define the signals that matter once; agents detect and log occurrences per company on a schedule.
+- **Run campaigns with researched personalization** — enroll companies into a campaign; the hypothesis, voice, and cadence live right next to the list.
+- **Sync state back to your CRM** — the workspace is the working copy; sync workflows push updates back. *(roadmap)*
+
+## Prerequisites
+
+- [Claude Code](https://claude.com/claude-code) — or any agent that can read files and call MCP tools
+- MCP connections to your GTM stack: at minimum your CRM (Attio, HubSpot, Pipedrive); ideally also your meeting recorder (Granola, Gong), sequencer (Instantly, Apollo), and enrichment provider (Extruct, Clay)
+- Nothing else — no database, no server. Everything is files and git.
+
+## Quickstart
+
+1. Clone and open:
+   ```bash
+   git clone https://github.com/extruct-ai/gtm-context-protocol.git
+   cd gtm-context-protocol && claude
+   ```
+2. Connect your tools as MCP servers (`claude mcp add ...` or your claude.ai connectors).
+3. Say **"set up my workspace"** — the agent checks your connections, interviews you about product, personas, and signals, and fills `knowledge-base/`.
+4. Say **"add {company} and research it"** — the agent creates the company folder, pulls your CRM history, and writes its context and signals.
+5. Open `companies/{company}/context/context.md` — that's your first artifact.
+
+The setup routine and workspace rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically — any agent landing in this folder already knows how to behave.
 
 ## Layout
 
@@ -16,10 +35,10 @@ Core model:
 .
 ├── orchestration/
 │   ├── workflows/          # one YAML per workflow — triggers, scope, steps
-│   ├── prompts/            # reusable agent instructions (generic for now)
-│   └── scripts/            # deterministic code ops (generic for now)
+│   ├── prompts/            # reusable agent instructions
+│   └── scripts/            # deterministic code ops
 │
-├── knowledge-base/              # the workspace knowledge base (one per workspace)
+├── knowledge-base/              # what you sell, to whom, and what to watch for
 │   ├── knowledge-base.yaml
 │   ├── definition.md
 │   ├── signals/sample-signal/   # signal.yaml + definition.md
@@ -44,76 +63,10 @@ Core model:
         ├── cadence.md  knowledge.md
 ```
 
-The repo root is the workspace, and `knowledge-base/` is its single knowledge base. The `sample-*` assets (`companies/sample-company`, `campaigns/sample-campaign`, `knowledge-base/signals/sample-signal`, `orchestration/workflows/sample-workflow.yaml`) are empty, pre-wired templates: to create an asset, copy one, rename it, and update the IDs in its manifest.
+The `sample-*` assets are empty, pre-wired templates: to create an asset, copy one, rename it, and update the IDs in its manifest — or just ask the agent, which does exactly that.
 
-## Common YAML protocol
+## How everything stays connected
 
-Every asset manifest follows the same shape:
+Every company, campaign, and signal is a folder with one YAML "record card" — think CRM object, but in a file. The card tells agents which files belong to the asset, what it's linked to, and which workflows touch it. Assets reference each other by stable ID (`company.acme`, `campaign.pe-rollups-eu`), never by file path, so renaming folders never breaks a workflow — and there's no central registry to go stale. You'll rarely edit these cards by hand; agents maintain them.
 
-```yaml
-id:              # stable identifier — survives renames
-kind:            # company | campaign | signal | knowledge-base | workflow
-name:            # human-readable
-version:
-status:          # draft | active | paused | archived
-
-components:      # files belonging to the asset, each with its own id + path + format
-links:           # relationships to other assets, by ID
-orchestration:   # workflows that create, update, or consume the asset
-```
-
-ID conventions:
-
-```text
-kb                                       # the workspace knowledge base
-signal.new-fund                          # signal
-company.acme                             # company
-campaign.pe-rollups-eu                   # campaign
-workflow.daily-company-research          # workflow
-
-campaign.pe-rollups-eu.hypothesis        # component ID — a file inside an asset
-company.acme.context                     # lets workflows target one part of an asset
-```
-
-## Workflows reference IDs, not paths
-
-```yaml
-steps:
-  - id: load-company-context
-    action: read          # read | prompt | append | workflow
-    assets:
-      - company.{company_id}.context
-```
-
-The path behind `company.acme.context` is resolved through `company.yaml`. Renaming a directory never breaks a workflow. Same rule in `companies.csv` — a campaign stores `company.acme`, not a path.
-
-## Signal definitions vs. occurrences
-
-`signal.new-fund` is the reusable **definition** (an asset).
-`signal-event.acme.new-fund.2026-08-01` is one detected **occurrence** — a row in the company's `raw-signals.jsonl`:
-
-```json
-{
-  "id": "signal-event.acme.new-fund.2026-08-01",
-  "kind": "signal-occurrence",
-  "signal_id": "signal.new-fund",
-  "company_id": "company.acme",
-  "detected_by": "workflow.daily-company-research",
-  "detected_at": "2026-08-01T10:30:00Z",
-  "source": { "type": "company-announcement", "url": "source-reference" },
-  "status": "unvalidated"
-}
-```
-
-Chain: signal definition → signal occurrence → company → campaign → workflow.
-
-## Format separation
-
-| Format   | Holds                                                          |
-| -------- | -------------------------------------------------------------- |
-| YAML     | Identification, components, relationships, orchestration       |
-| Markdown | Knowledge, context, hypotheses, messaging, definitions         |
-| JSONL    | Raw events, messages, entities, detected signal occurrences    |
-| CSV      | Lists and membership (which companies belong to a campaign)    |
-
-YAML is the linking protocol across the workspace; workflows describe what happens across the linked assets.
+Full spec — manifest shape, ID conventions, workflow references, signal occurrences: [`PROTOCOL.md`](PROTOCOL.md).
