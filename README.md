@@ -19,13 +19,12 @@ Core model:
 │   ├── prompts/            # reusable agent instructions (generic for now)
 │   └── scripts/            # deterministic code ops (generic for now)
 │
-├── knowledge-base/
-│   └── sample-knowledge-base/
-│       ├── knowledge-base.yaml
-│       ├── definition.md
-│       ├── signals/sample-signal/   # signal.yaml + definition.md
-│       ├── product/  personas/  use-cases/
-│       └── case-studies/  objections/  competitors/
+├── knowledge-base/              # the workspace knowledge base (one per workspace)
+│   ├── knowledge-base.yaml
+│   ├── definition.md
+│   ├── signals/sample-signal/   # signal.yaml + definition.md
+│   ├── product/  personas/  use-cases/
+│   └── case-studies/  objections/  competitors/
 │
 ├── companies/
 │   └── sample-company/
@@ -45,7 +44,7 @@ Core model:
         ├── cadence.md  knowledge.md
 ```
 
-The repo root is the workspace. The `sample-*` folders (`companies/sample-company`, `campaigns/sample-campaign`, `knowledge-base/sample-knowledge-base`, `orchestration/workflows/sample-workflow.yaml`) are empty, pre-wired templates: to create an asset, copy one, rename it, and update the IDs in its manifest.
+The repo root is the workspace, and `knowledge-base/` is its single knowledge base. The `sample-*` assets (`companies/sample-company`, `campaigns/sample-campaign`, `knowledge-base/signals/sample-signal`, `orchestration/workflows/sample-workflow.yaml`) are empty, pre-wired templates: to create an asset, copy one, rename it, and update the IDs in its manifest.
 
 ## Common YAML protocol
 
@@ -66,8 +65,8 @@ orchestration:   # workflows that create, update, or consume the asset
 ID conventions:
 
 ```text
-kb.private-equity                        # knowledge base
-signal.private-equity.new-fund           # signal (namespaced by its KB)
+kb                                       # the workspace knowledge base
+signal.new-fund                          # signal
 company.acme                             # company
 campaign.pe-rollups-eu                   # campaign
 workflow.daily-company-research          # workflow
@@ -90,14 +89,14 @@ The path behind `company.acme.context` is resolved through `company.yaml`. Renam
 
 ## Signal definitions vs. occurrences
 
-`signal.private-equity.new-fund` is the reusable **definition** (an asset).
+`signal.new-fund` is the reusable **definition** (an asset).
 `signal-event.acme.new-fund.2026-08-01` is one detected **occurrence** — a row in the company's `raw-signals.jsonl`:
 
 ```json
 {
   "id": "signal-event.acme.new-fund.2026-08-01",
   "kind": "signal-occurrence",
-  "signal_id": "signal.private-equity.new-fund",
+  "signal_id": "signal.new-fund",
   "company_id": "company.acme",
   "detected_by": "workflow.daily-company-research",
   "detected_at": "2026-08-01T10:30:00Z",

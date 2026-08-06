@@ -1,4 +1,4 @@
-id: signal.sample-knowledge-base.sample-signal
+id: signal.sample-signal
 kind: signal
 name:
 version: 1
@@ -6,13 +6,13 @@ status: draft
 
 components:
   definition:
-    id: signal.sample-knowledge-base.sample-signal.definition
+    id: signal.sample-signal.definition
     path: ./definition.md
     format: markdown
 
 links:
   knowledge_base:
-    - kb.sample-knowledge-base
+    - kb
   campaigns: []
 
 orchestration:
