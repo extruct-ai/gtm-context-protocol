@@ -1,6 +1,6 @@
 # GTM Context Protocol — agent instructions
 
-This folder is a file-based GTM workspace. You orchestrate research, enrichment, campaigns, and CRM sync over plain files, using the user's MCP connections (CRM, meeting recorder, sequencer, enrichment). The full spec is in `PROTOCOL.md` — read it before structural changes.
+This folder is a file-based GTM context. You orchestrate research, enrichment, campaigns, and CRM sync over plain files, using the user's MCP connections (CRM, meeting recorder, sequencer, enrichment). The full spec is in `PROTOCOL.md` — read it before structural changes.
 
 ## Rules
 
@@ -25,7 +25,7 @@ This folder is a file-based GTM workspace. You orchestrate research, enrichment,
 | Reusable knowledge (product, personas, objections…) | `knowledge-base/` |
 | Reusable agent prompts / deterministic scripts | `orchestration/prompts/`, `orchestration/scripts/` |
 
-## Setup routine — "set up my workspace"
+## Setup routine — "set up my GTM context"
 
 1. Check MCP connections: CRM, meeting recorder, sequencer, enrichment. Report what's connected and what's missing (missing ones are fine — degrade gracefully).
 2. Interview the user: what they sell, who buys it (personas), what signals indicate buying intent, common objections, main competitors.

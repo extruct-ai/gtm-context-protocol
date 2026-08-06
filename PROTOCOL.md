@@ -1,6 +1,6 @@
 # Protocol Specification
 
-The full spec behind the workspace. Read [`README.md`](README.md) first for the human overview; this file is for implementers and agents.
+The full spec behind the GTM context. Read [`README.md`](README.md) first for the human overview; this file is for implementers and agents.
 
 ## Core model
 
@@ -29,7 +29,7 @@ orchestration:   # workflows that create, update, or consume the asset
 ID conventions:
 
 ```text
-kb                                       # the workspace knowledge base
+kb                                       # the knowledge base of the GTM context
 signal.new-fund                          # signal
 company.acme                             # company
 campaign.pe-rollups-eu                   # campaign
@@ -82,4 +82,4 @@ Chain: signal definition → signal occurrence → company → campaign → work
 | JSONL    | Raw events, messages, entities, detected signal occurrences    |
 | CSV      | Lists and membership (which companies belong to a campaign)    |
 
-YAML is the linking protocol across the workspace; workflows describe what happens across the linked assets.
+YAML is the linking protocol across the GTM context; workflows describe what happens across the linked assets.

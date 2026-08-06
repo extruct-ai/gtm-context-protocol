@@ -1,13 +1,13 @@
 # GTM Context Protocol
 
-A file-based GTM workspace you embed in a project and drive with agents (Claude Code, workflows, scripts). Connect this folder to your tools — CRM, sequencer, meeting recorder, enrichment — and agents orchestrate research, enrichment, copy preparation, and signal monitoring on top of it. The goal is a structure you invite your future agents into, so they don't reinvent the wheel every session.
+A file-based GTM context you embed in a project and drive with agents (Claude Code, workflows, scripts). Connect this folder to your tools — CRM, sequencer, meeting recorder, enrichment — and agents orchestrate research, enrichment, copy preparation, and signal monitoring on top of it. The goal is a structure you invite your future agents into, so they don't reinvent the wheel every session.
 
 ## What you can do with it
 
 - **Keep account context fresh** — agents pull CRM history, meetings, and emails into one living `context.md` per company.
 - **Monitor buying signals** — define the signals that matter once; agents detect and log occurrences per company on a schedule.
 - **Run campaigns with researched personalization** — enroll companies into a campaign; the hypothesis, voice, and cadence live right next to the list.
-- **Sync state back to your CRM** — the workspace is the working copy; sync workflows push updates back. *(roadmap)*
+- **Sync state back to your CRM** — your GTM context is the working copy; sync workflows push updates back. *(roadmap)*
 
 ## Prerequisites
 
@@ -23,11 +23,11 @@ A file-based GTM workspace you embed in a project and drive with agents (Claude 
    cd gtm-context-protocol && claude
    ```
 2. Connect your tools as MCP servers (`claude mcp add ...` or your claude.ai connectors).
-3. Say **"set up my workspace"** — the agent checks your connections, interviews you about product, personas, and signals, and fills `knowledge-base/`.
+3. Say **"set up my GTM context"** — the agent checks your connections, interviews you about product, personas, and signals, and fills `knowledge-base/`.
 4. Say **"add {company} and research it"** — the agent creates the company folder, pulls your CRM history, and writes its context and signals.
 5. Open `companies/{company}/context/context.md` — that's your first artifact.
 
-The setup routine and workspace rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically — any agent landing in this folder already knows how to behave.
+The setup routine and context rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically — any agent landing in this folder already knows how to behave.
 
 ## Layout
 
