@@ -13,39 +13,39 @@ Core model:
 ## Layout
 
 ```text
-gtm/
+.
 ├── orchestration/
-│   ├── workflows/          # {workflow-name}.yaml — triggers, scope, steps
+│   ├── workflows/          # one YAML per workflow — triggers, scope, steps
 │   ├── prompts/            # reusable agent instructions (generic for now)
 │   └── scripts/            # deterministic code ops (generic for now)
 │
 ├── knowledge-base/
-│   └── {knowledge-base-name}/
+│   └── sample-knowledge-base/
 │       ├── knowledge-base.yaml
 │       ├── definition.md
-│       ├── signals/{signal-name}/   # signal.yaml + definition.md
+│       ├── signals/sample-signal/   # signal.yaml + definition.md
 │       ├── product/  personas/  use-cases/
 │       └── case-studies/  objections/  competitors/
 │
 ├── companies/
-│   └── {company-name}/
+│   └── sample-company/
 │       ├── company.yaml
 │       ├── context/        # context.md + raw/ (events, messages, entities, graph)
 │       ├── research/       # signals.md, distillation.md, raw-signals.jsonl
-│       ├── org-chart/      # orgchart.md + people/{person-name}.md
+│       ├── org-chart/      # orgchart.md + people/ (one .md per person)
 │       ├── framework.md
 │       ├── engagement.md
 │       └── crm.yaml
 │
 └── campaigns/
-    └── {campaign-name}/
+    └── sample-campaign/
         ├── campaign.yaml
         ├── companies.csv   # membership by company_id
         ├── hypothesis.md  voice.md  text.md
         ├── cadence.md  knowledge.md
 ```
 
-The `gtm/` tree in this repo is the **empty template**: `{placeholder}` directories contain pre-wired YAML manifests. To create an asset, copy the placeholder folder, rename it, and fill in the manifest.
+The repo root is the workspace. The `sample-*` folders (`companies/sample-company`, `campaigns/sample-campaign`, `knowledge-base/sample-knowledge-base`, `orchestration/workflows/sample-workflow.yaml`) are empty, pre-wired templates: to create an asset, copy one, rename it, and update the IDs in its manifest.
 
 ## Common YAML protocol
 

@@ -1,4 +1,4 @@
-id: company.{company-name}
+id: company.sample-company
 kind: company
 name:
 version: 1
@@ -10,67 +10,67 @@ identity:
 
 components:
   context:
-    id: company.{company-name}.context
+    id: company.sample-company.context
     path: ./context/context.md
     format: markdown
 
   events:
-    id: company.{company-name}.events
+    id: company.sample-company.events
     path: ./context/raw/events.jsonl
     format: jsonl
 
   messages:
-    id: company.{company-name}.messages
+    id: company.sample-company.messages
     path: ./context/raw/messages.jsonl
     format: jsonl
 
   entities:
-    id: company.{company-name}.entities
+    id: company.sample-company.entities
     path: ./context/raw/entities.jsonl
     format: jsonl
 
   graph:
-    id: company.{company-name}.graph
+    id: company.sample-company.graph
     path: ./context/raw/graph.json
     format: json
 
   signals:
-    id: company.{company-name}.signals
+    id: company.sample-company.signals
     path: ./research/signals.md
     format: markdown
 
   raw_signals:
-    id: company.{company-name}.raw-signals
+    id: company.sample-company.raw-signals
     path: ./research/raw-signals.jsonl
     format: jsonl
 
   distillation:
-    id: company.{company-name}.distillation
+    id: company.sample-company.distillation
     path: ./research/distillation.md
     format: markdown
 
   org_chart:
-    id: company.{company-name}.org-chart
+    id: company.sample-company.org-chart
     path: ./org-chart/orgchart.md
     format: markdown
 
   people:
-    id: company.{company-name}.people
+    id: company.sample-company.people
     path: ./org-chart/people/
     format: directory
 
   framework:
-    id: company.{company-name}.framework
+    id: company.sample-company.framework
     path: ./framework.md
     format: markdown
 
   engagement:
-    id: company.{company-name}.engagement
+    id: company.sample-company.engagement
     path: ./engagement.md
     format: markdown
 
   crm:
-    id: company.{company-name}.crm
+    id: company.sample-company.crm
     path: ./crm.yaml
     format: yaml
 

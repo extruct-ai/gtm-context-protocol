@@ -1,4 +1,4 @@
-id: workflow.{workflow-name}
+id: workflow.sample-workflow
 kind: workflow
 name:
 version: 1
@@ -10,7 +10,7 @@ trigger:
 
 scope:
   source:
-    asset: # e.g. campaign.{campaign-name}.companies
+    asset: # e.g. campaign.sample-campaign.companies
 
 steps:
   - id:

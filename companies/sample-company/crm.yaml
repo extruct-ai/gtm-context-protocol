@@ -1,4 +1,4 @@
-id: company.{company-name}.crm
+id: company.sample-company.crm
 kind: crm-state
 version: 1
 

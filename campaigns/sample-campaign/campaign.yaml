@@ -1,4 +1,4 @@
-id: campaign.{campaign-name}
+id: campaign.sample-campaign
 kind: campaign
 name:
 version: 1
@@ -6,32 +6,32 @@ status: draft
 
 components:
   companies:
-    id: campaign.{campaign-name}.companies
+    id: campaign.sample-campaign.companies
     path: ./companies.csv
     format: csv
 
   hypothesis:
-    id: campaign.{campaign-name}.hypothesis
+    id: campaign.sample-campaign.hypothesis
     path: ./hypothesis.md
     format: markdown
 
   voice:
-    id: campaign.{campaign-name}.voice
+    id: campaign.sample-campaign.voice
     path: ./voice.md
     format: markdown
 
   text:
-    id: campaign.{campaign-name}.text
+    id: campaign.sample-campaign.text
     path: ./text.md
     format: markdown
 
   cadence:
-    id: campaign.{campaign-name}.cadence
+    id: campaign.sample-campaign.cadence
     path: ./cadence.md
     format: markdown
 
   knowledge:
-    id: campaign.{campaign-name}.knowledge
+    id: campaign.sample-campaign.knowledge
     path: ./knowledge.md
     format: markdown
 

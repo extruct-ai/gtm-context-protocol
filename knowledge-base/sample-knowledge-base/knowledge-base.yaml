@@ -1,4 +1,4 @@
-id: kb.{knowledge-base-name}
+id: kb.sample-knowledge-base
 kind: knowledge-base
 name:
 version: 1
@@ -6,42 +6,42 @@ status: draft
 
 components:
   definition:
-    id: kb.{knowledge-base-name}.definition
+    id: kb.sample-knowledge-base.definition
     path: ./definition.md
     format: markdown
 
   signals:
-    id: kb.{knowledge-base-name}.signals
+    id: kb.sample-knowledge-base.signals
     path: ./signals/
     format: directory
 
   product:
-    id: kb.{knowledge-base-name}.product
+    id: kb.sample-knowledge-base.product
     path: ./product/
     format: directory
 
   personas:
-    id: kb.{knowledge-base-name}.personas
+    id: kb.sample-knowledge-base.personas
     path: ./personas/
     format: directory
 
   use_cases:
-    id: kb.{knowledge-base-name}.use-cases
+    id: kb.sample-knowledge-base.use-cases
     path: ./use-cases/
     format: directory
 
   case_studies:
-    id: kb.{knowledge-base-name}.case-studies
+    id: kb.sample-knowledge-base.case-studies
     path: ./case-studies/
     format: directory
 
   objections:
-    id: kb.{knowledge-base-name}.objections
+    id: kb.sample-knowledge-base.objections
     path: ./objections/
     format: directory
 
   competitors:
-    id: kb.{knowledge-base-name}.competitors
+    id: kb.sample-knowledge-base.competitors
     path: ./competitors/
     format: directory
 
