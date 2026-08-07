@@ -1,6 +1,18 @@
 # GTM Context Protocol
 
-The protocol for the source of truth for your GTM work: what you sell, your signals, your companies, your campaigns. A system you connect your agents to. Plug in your tools over MCP (CRM, email, meeting recorder, sequencer, enrichment). Any agent then reads this context, works in it, and adds to it. 
+The source of truth for your GTM work: what you sell, your signals, your companies, your campaigns. A system you connect your agents to. Plug in your tools over MCP (CRM, email, meeting recorder, sequencer, enrichment). Any agent then reads this context, works in it, and adds to it.
+
+## What this is
+
+A template repo. Clone it once and it becomes your GTM context: your data fills it, your agents maintain it. "Protocol" means the rules that make every agent file things the same way. You don't need to read those rules. Your agent does. They live in [`CLAUDE.md`](CLAUDE.md) and [`PROTOCOL.md`](PROTOCOL.md).
+
+## What you tweak
+
+Everything is yours after cloning. In practice:
+
+- **You write:** knowledge base content (product, personas, objections), signal definitions (what to watch, which provider), campaign strategy (hypothesis, voice, cadence).
+- **Agents write:** company folders (context, research, raw data), the YAML record cards, signal occurrences.
+- **Keep intact:** the folder structure and the IDs. That is what agents navigate by.
 
 ## What you can do with it
 
