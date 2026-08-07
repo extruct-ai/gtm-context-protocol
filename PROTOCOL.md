@@ -81,6 +81,16 @@ The path behind `company.acme.context` is resolved through `company.yaml`. Renam
 
 ## Signal definitions vs. occurrences
 
+A signal definition declares its own detection. The `detection` block in `signal.yaml` names the provider (which connected tool checks it) and the query:
+
+```yaml
+detection:
+  provider: web-search      # extruct | apollo | web-search | crm | email | meetings
+  query: "announced a new fund OR closed fund"
+```
+
+Workflows read this block instead of hardcoding sources. One signal, one place to change how it's detected.
+
 `signal.new-fund` is the reusable **definition** (an asset).
 `signal-event.acme.new-fund.2026-08-01` is one detected **occurrence** — a row in the company's `raw-signals.jsonl`:
 

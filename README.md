@@ -6,7 +6,7 @@ The protocol for the source of truth for your GTM work: what you sell, your sign
 
 - **Connect your book of business.** Plug in your CRM, email, meeting recorder, and sequencer. Every company becomes a folder here.
 - **Keep account context fresh.** Agents distill CRM history, meetings, and emails into one `context.md` per company and keep it updated.
-- **Define your buying signals.** Write down the signals that matter once. The signal harness in `orchestration/` reviews every occurrence detected per company.
+- **Define your buying signals.** Write down the signals that matter once. Each signal names the provider that detects it. The signal harness in `orchestration/` reviews every occurrence per company.
 - **Run campaigns.** Enroll companies into a campaign. The hypothesis, voice, and cadence live next to the list.
 - **Create workflows.** Describe recurring jobs in `orchestration/`: daily company research, signal checks, CRM sync. Agents run them on a schedule. *(roadmap)*
 

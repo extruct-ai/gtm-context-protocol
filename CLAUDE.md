@@ -1,6 +1,6 @@
 # GTM Context Protocol — agent instructions
 
-This folder is a file-based GTM context. You orchestrate research, enrichment, campaigns, and CRM sync over plain files, using the user's MCP connections (CRM, meeting recorder, sequencer, enrichment). The full spec is in `PROTOCOL.md` — read it before structural changes.
+This folder is a file-based GTM context. You are the agent working in it. "The user" throughout this file is the person who cloned this repo and connected you to their tools: the GTM engineer or salesperson who owns this context. You orchestrate research, enrichment, campaigns, and CRM sync over plain files, using their MCP connections (CRM, email, meeting recorder, sequencer, enrichment). The full spec is in `PROTOCOL.md` — read it before structural changes.
 
 ## Rules
 
@@ -43,13 +43,14 @@ This folder is a file-based GTM context. You orchestrate research, enrichment, c
 ## Defining signals — "define my signals"
 
 1. Ask the user which events mean buying intent for them (funding, hiring, leadership change, tech adoption, expansion). One signal = one observable event.
-2. For each confirmed signal, copy `knowledge-base/signals/sample-signal` into a new signal asset, update its IDs, and write `definition.md`: what the signal means, where it can be observed, what evidence counts.
-3. Set each signal's status to `active`. Never create signals the user didn't confirm.
+2. For each signal, ask which provider detects it: enrichment (Extruct, Clay), web search, CRM activity, email, meeting transcripts. Write provider and query into the `detection` block of the signal's `signal.yaml`. This is the point of a signal definition: detection lives in the signal, in one place, never inside a workflow.
+3. Copy `knowledge-base/signals/sample-signal` into a new signal asset, update its IDs, and write `definition.md`: what the signal means, what evidence counts.
+4. Set each signal's status to `active`. Never create signals the user didn't confirm.
 
 ## Researching companies — "research my companies"
 
 1. Confirm scope: all active companies, or the subset the user names.
-2. For each company, check every active signal definition against available sources: web research, enrichment MCP, and the company's own raw data.
+2. For each company, run every active signal through its declared provider (the `detection` block in its `signal.yaml`). No signal without a provider; ask the user to complete the definition instead of improvising sources.
 3. Append each occurrence to `research/raw-signals.jsonl` (signal-event ID, source, status `unvalidated`).
 4. Distill into `research/signals.md`: what fired, the evidence, a suggested angle.
 5. Report back: companies checked, occurrences found, strongest signals first.

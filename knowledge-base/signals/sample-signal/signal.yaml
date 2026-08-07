@@ -4,6 +4,10 @@ name:
 version: 1
 status: draft
 
+detection:
+  provider: # which connected tool detects this signal: extruct | apollo | web-search | crm | email | meetings
+  query: # what to look for, in the provider's terms
+
 components:
   definition:
     id: signal.sample-signal.definition
