@@ -1,13 +1,13 @@
 # GTM Context Protocol
 
-A file-based GTM context you embed in a project and drive with agents (Claude Code, workflows, scripts). Connect this folder to your tools: CRM, email, meeting recorder, sequencer, enrichment. Agents run research, enrichment, copy, and signals on top of it. The goal is a structure you invite your future agents into, so they don't reinvent the wheel every session.
+One folder of plain files where all your GTM context lives: what you sell, your signals, your companies, your campaigns. Connect your tools over MCP (CRM, email, meeting recorder, sequencer, enrichment) and any agent can read this folder, work in it, and add to it. No agent starts from zero.
 
 ## What you can do with it
 
 - **Connect your book of business.** Plug in your CRM, email, meeting recorder, and sequencer. Every company becomes a folder here.
-- **Keep account context fresh.** Agents distill that history into one living `context.md` per company and keep it updated.
-- **Define your buying signals.** Write down the signals that matter once. Your signal harness reviews every occurrence detected per company.
-- **Run campaigns with researched personalization.** Enroll companies into a campaign. The hypothesis, voice, and cadence live right next to the list.
+- **Keep account context fresh.** Agents distill CRM history, meetings, and emails into one `context.md` per company and keep it updated.
+- **Define your buying signals.** Write down the signals that matter once. The signal harness in `orchestration/` reviews every occurrence detected per company.
+- **Run campaigns.** Enroll companies into a campaign. The hypothesis, voice, and cadence live next to the list.
 - **Create workflows.** Describe recurring jobs in `orchestration/`: daily company research, signal checks, CRM sync. Agents run them on a schedule. *(roadmap)*
 
 ## Prerequisites
