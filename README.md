@@ -4,7 +4,8 @@ A file-based GTM context you embed in a project and drive with agents (Claude Co
 
 ## What you can do with it
 
-- **Keep account context fresh** — agents pull CRM history, meetings, and emails into one living `context.md` per company.
+- **Reconstruct your book of business from the tools you already use** — connect your MCPs and the agent rebuilds every company as a folder: CRM records, contacts, meetings, emails.
+- **Keep account context fresh** — agents distill that history into one living `context.md` per company and keep it updated.
 - **Monitor buying signals** — define the signals that matter once; agents detect and log occurrences per company on a schedule.
 - **Run campaigns with researched personalization** — enroll companies into a campaign; the hypothesis, voice, and cadence live right next to the list.
 - **Sync state back to your CRM** — your GTM context is the working copy; sync workflows push updates back. *(roadmap)*
@@ -24,8 +25,10 @@ A file-based GTM context you embed in a project and drive with agents (Claude Co
    ```
 2. Connect your tools as MCP servers (`claude mcp add ...` or your claude.ai connectors).
 3. Say **"set up my GTM context"** — the agent checks your connections, interviews you about product, personas, and signals, and fills `knowledge-base/`.
-4. Say **"add {company} and research it"** — the agent creates the company folder, pulls your CRM history, and writes its context and signals.
-5. Open `companies/{company}/context/context.md` — that's your first artifact.
+4. Say **"sync my companies"** — the agent pulls every account from your CRM, reconstructs each one as a company folder (contacts, history, raw data), and writes its `context.md`.
+5. Open `companies/` — your book of business as files, one researched context per company.
+
+One-off additions work too: **"add {company} and research it"** onboards a single company — useful for net-new targets that aren't in your CRM yet.
 
 The setup routine and context rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically — any agent landing in this folder already knows how to behave.
 

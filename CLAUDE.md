@@ -33,9 +33,21 @@ This folder is a file-based GTM context. You orchestrate research, enrichment, c
 4. For each signal named, copy `knowledge-base/signals/sample-signal` into a new signal asset and write its `definition.md`.
 5. Set `knowledge-base.yaml` status to `active`.
 
-## Adding a company — "add {company} and research it"
+## Syncing companies — "sync my companies" / "sync my CRM"
 
-1. Copy `companies/sample-company` → `companies/{company-slug}`; update all IDs in `company.yaml`; fill `identity` (domain, `crm_id` from the CRM).
+The primary flow: reconstruct the user's book of business from their connected MCPs.
+
+1. Pull the account list from the CRM MCP. If it's large, confirm scope with the user first (all accounts, active deals only, a segment).
+2. For each account not yet in `companies/`: create the folder from `sample-company`, update all IDs, fill `identity` (domain, `crm_id`).
+3. Pull per-company history — CRM activity, meetings, emails, contacts — into `context/raw/*.jsonl`; contacts become entries under `org-chart/people/`.
+4. Write or refresh `context/context.md` for each company; record provider and sync timestamp in `crm.yaml`.
+5. Re-runs are incremental: skip companies with no new data, append new raw records (never rewrite), refresh `context.md` only where something changed.
+
+## Adding a single company — "add {company} and research it"
+
+For a net-new target that isn't in the CRM yet, or a deep one-off.
+
+1. Copy `companies/sample-company` → `companies/{company-slug}`; update all IDs in `company.yaml`; fill `identity` (domain, `crm_id` from the CRM if it exists there).
 2. Pull available history via MCP — CRM record and activity, meetings, emails — into `context/raw/*.jsonl`.
 3. Write `context/context.md`: the current state of the relationship, grounded in that raw data.
 4. Research the company against the knowledge-base signals; append hits to `research/raw-signals.jsonl` and summarize in `research/signals.md`.
