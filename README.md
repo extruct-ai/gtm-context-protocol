@@ -1,19 +1,19 @@
 # GTM Context Protocol
 
-A file-based GTM context you embed in a project and drive with agents (Claude Code, workflows, scripts). Connect this folder to your tools — CRM, sequencer, meeting recorder, enrichment — and agents orchestrate research, enrichment, copy preparation, and signal monitoring on top of it. The goal is a structure you invite your future agents into, so they don't reinvent the wheel every session.
+A file-based GTM context you embed in a project and drive with agents (Claude Code, workflows, scripts). Connect this folder to your tools — CRM, email, meeting recorder, sequencer, enrichment — and agents run research, enrichment, copy, and signals on top of it. The goal is a structure you invite your future agents into, so they don't reinvent the wheel every session.
 
 ## What you can do with it
 
-- **Reconstruct your book of business from the tools you already use** — connect your MCPs and the agent rebuilds every company as a folder: CRM records, contacts, meetings, emails.
+- **Connect your book of business** — plug in your CRM, email, meeting recorder, and sequencer; every company becomes a folder here.
 - **Keep account context fresh** — agents distill that history into one living `context.md` per company and keep it updated.
-- **Monitor buying signals** — define the signals that matter once; agents detect and log occurrences per company on a schedule.
+- **Define your buying signals** — write down the signals that matter once; every occurrence detected per company gets reviewed by your signal harness here.
 - **Run campaigns with researched personalization** — enroll companies into a campaign; the hypothesis, voice, and cadence live right next to the list.
 - **Stay bound to your CRM without mirroring it** — the repo holds policy (who to touch, how); your CRM keeps state (stage, owner, last touch); sync workflows keep the two in step. *(roadmap)*
 
 ## Prerequisites
 
 - [Claude Code](https://claude.com/claude-code) — or any agent that can read files and call MCP tools
-- MCP connections to your GTM stack: at minimum your CRM (Attio, HubSpot, Pipedrive); ideally also your meeting recorder (Granola, Gong), sequencer (Instantly, Apollo), and enrichment provider (Extruct, Clay)
+- MCP connections to your GTM stack: at minimum your CRM (Attio, HubSpot, Pipedrive); ideally also email (Gmail, Outlook), meeting recorder (Granola, Gong), sequencer (Instantly, Apollo), and enrichment (Extruct, Clay)
 - Nothing else — no database, no server. Everything is files and git.
 
 ## Quickstart
@@ -25,7 +25,7 @@ A file-based GTM context you embed in a project and drive with agents (Claude Co
    ```
 2. Connect your tools as MCP servers (`claude mcp add ...` or your claude.ai connectors).
 3. Say **"set up my GTM context"** — the agent checks your connections, interviews you about product, personas, and signals, and fills `knowledge-base/`.
-4. Say **"sync my companies"** — the agent pulls every account from your CRM, reconstructs each one as a company folder (contacts, history, raw data), and writes its `context.md`.
+4. Say **"sync my companies"** — the agent pulls every account from your CRM into a company folder and writes its `context.md`.
 5. Open `companies/` — your book of business as files, one researched context per company.
 
 One-off additions work too: **"add {company} and research it"** onboards a single company — useful for net-new targets that aren't in your CRM yet.

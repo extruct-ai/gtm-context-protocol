@@ -42,7 +42,7 @@ This folder is a file-based GTM context. You orchestrate research, enrichment, c
 
 ## Syncing companies — "sync my companies" / "sync my CRM"
 
-The primary flow: reconstruct the user's book of business from their connected MCPs.
+The primary flow: sync the user's book of business from their connected sources — CRM, email, meeting recorder, sequencer.
 
 1. Pull the account list from the CRM MCP. If it's large, confirm scope with the user first (all accounts, active deals only, a segment).
 2. For each account not yet in `companies/`: create the folder from `sample-company`, update all IDs, fill `identity` (domain, `crm_id`).
