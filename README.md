@@ -1,6 +1,6 @@
 # GTM Context Protocol
 
-The source of truth for your GTM work: what you sell, your signals, your companies, your campaigns. A system you connect your agents to. Plug in your tools over MCP (CRM, email, meeting recorder, sequencer, enrichment). Any agent then reads this context, works in it, and adds to it. No agent starts from zero.
+The protocol for the source of truth for your GTM work: what you sell, your signals, your companies, your campaigns. A system you connect your agents to. Plug in your tools over MCP (CRM, email, meeting recorder, sequencer, enrichment). Any agent then reads this context, works in it, and adds to it. 
 
 ## What you can do with it
 
@@ -12,9 +12,8 @@ The source of truth for your GTM work: what you sell, your signals, your compani
 
 ## Prerequisites
 
-- [Claude Code](https://claude.com/claude-code), or any agent that can read files and call MCP tools
 - MCP connections to your GTM stack: at minimum your CRM (Attio, HubSpot, Pipedrive); ideally also email (Gmail, Outlook), meeting recorder (Granola, Gong), sequencer (Instantly, Apollo), and enrichment (Extruct, Clay)
-- Nothing else. No database, no server. Everything is files and git.
+- Claude Code, Codex, Cursor
 
 ## Quickstart
 
@@ -24,9 +23,11 @@ The source of truth for your GTM work: what you sell, your signals, your compani
    cd gtm-context-protocol && claude
    ```
 2. Connect your tools as MCP servers (`claude mcp add ...` or your claude.ai connectors).
-3. Say **"set up my GTM context"**. The agent checks your connections, interviews you about product, personas, and signals, and fills `knowledge-base/`.
+3. Say **"set up my GTM context"**. The agent checks your connections, interviews you about your product and personas, and fills `knowledge-base/`.
 4. Say **"sync my companies"**. The agent pulls every account from your CRM into a company folder and writes its `context.md`.
-5. Open `companies/`. Your book of business is now files, one researched context per company.
+5. Say **"define my signals"**. Tell the agent which events mean buying intent for you. Each one becomes a definition in `knowledge-base/signals/`.
+6. Say **"research my companies"**. The agent checks every company against your signals and logs what it finds in `research/`.
+7. Open `companies/`. Your book of business is now files: context, signals, and research per company.
 
 One-off additions work too. **"add {company} and research it"** onboards a single company. Useful for net-new targets that aren't in your CRM yet.
 

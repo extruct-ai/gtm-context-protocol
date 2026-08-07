@@ -34,11 +34,25 @@ This folder is a file-based GTM context. You orchestrate research, enrichment, c
 
 ## Setup routine — "set up my GTM context"
 
-1. Check MCP connections: CRM, meeting recorder, sequencer, enrichment. Report what's connected and what's missing (missing ones are fine — degrade gracefully).
-2. Interview the user: what they sell, who buys it (personas), what signals indicate buying intent, common objections, main competitors.
+1. Check MCP connections: CRM, email, meeting recorder, sequencer, enrichment. Report what's connected and what's missing (missing ones are fine — degrade gracefully).
+2. Interview the user: what they sell, who buys it (personas), common objections, main competitors.
 3. Fill `knowledge-base/definition.md` and the subfolders (`product/`, `personas/`, `use-cases/`, `objections/`, `competitors/`) — one markdown file per item.
-4. For each signal named, copy `knowledge-base/signals/sample-signal` into a new signal asset and write its `definition.md`.
-5. Set `knowledge-base.yaml` status to `active`.
+4. Set `knowledge-base.yaml` status to `active`.
+5. Point the user to the next steps: "sync my companies", then "define my signals".
+
+## Defining signals — "define my signals"
+
+1. Ask the user which events mean buying intent for them (funding, hiring, leadership change, tech adoption, expansion). One signal = one observable event.
+2. For each confirmed signal, copy `knowledge-base/signals/sample-signal` into a new signal asset, update its IDs, and write `definition.md`: what the signal means, where it can be observed, what evidence counts.
+3. Set each signal's status to `active`. Never create signals the user didn't confirm.
+
+## Researching companies — "research my companies"
+
+1. Confirm scope: all active companies, or the subset the user names.
+2. For each company, check every active signal definition against available sources: web research, enrichment MCP, and the company's own raw data.
+3. Append each occurrence to `research/raw-signals.jsonl` (signal-event ID, source, status `unvalidated`).
+4. Distill into `research/signals.md`: what fired, the evidence, a suggested angle.
+5. Report back: companies checked, occurrences found, strongest signals first.
 
 ## Syncing companies — "sync my companies" / "sync my CRM"
 
