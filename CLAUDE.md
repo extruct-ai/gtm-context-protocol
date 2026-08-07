@@ -12,6 +12,13 @@ This folder is a file-based GTM context. You orchestrate research, enrichment, c
 - Signal occurrences are appended to `companies/{name}/research/raw-signals.jsonl` with `signal-event.{company}.{signal}.{date}` IDs; distill validated ones into `research/signals.md`.
 - Keep `status` honest: `draft` → `active` → `paused` → `archived`.
 
+## Placement rules
+
+- Before placing any fact, apply the **boundary test**: *if this fact changed, what else would have to change?* If the answer crosses a folder boundary, it's in the wrong folder. Semantics: `knowledge-base/` = true regardless of audience; `campaigns/` = what we do to a population; `companies/` = one specific account; `orchestration/` = what runs. (Full definitions in `PROTOCOL.md`.)
+- **The repo holds policy; the CRM holds state.** Stage, owner, last touch live in the CRM — never copy them into markdown. `crm.yaml` binds to the record; it doesn't mirror it.
+- **Never fill an empty template slot with invented content.** An empty `voice.md` or `cadence.md` means *not decided yet*: ask the user or derive from raw data, otherwise leave it empty and keep the asset `draft`.
+- **Don't hoist shared tactics into the knowledge base.** If several campaigns share a cadence or voice, duplicate it at campaign level — the KB only takes audience-independent truth.
+
 ## Where things go
 
 | Artifact | Location |

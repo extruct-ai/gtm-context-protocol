@@ -8,7 +8,7 @@ A file-based GTM context you embed in a project and drive with agents (Claude Co
 - **Keep account context fresh** — agents distill that history into one living `context.md` per company and keep it updated.
 - **Monitor buying signals** — define the signals that matter once; agents detect and log occurrences per company on a schedule.
 - **Run campaigns with researched personalization** — enroll companies into a campaign; the hypothesis, voice, and cadence live right next to the list.
-- **Sync state back to your CRM** — your GTM context is the working copy; sync workflows push updates back. *(roadmap)*
+- **Stay bound to your CRM without mirroring it** — the repo holds policy (who to touch, how); your CRM keeps state (stage, owner, last touch); sync workflows keep the two in step. *(roadmap)*
 
 ## Prerequisites
 
