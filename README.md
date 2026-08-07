@@ -1,6 +1,6 @@
 # GTM Context Protocol
 
-One folder of plain files where all your GTM context lives: what you sell, your signals, your companies, your campaigns. Connect your tools over MCP (CRM, email, meeting recorder, sequencer, enrichment) and any agent can read this folder, work in it, and add to it. No agent starts from zero.
+The source of truth for your GTM work: what you sell, your signals, your companies, your campaigns. A system you connect your agents to. Plug in your tools over MCP (CRM, email, meeting recorder, sequencer, enrichment). Any agent then reads this context, works in it, and adds to it. No agent starts from zero.
 
 ## What you can do with it
 
@@ -30,7 +30,7 @@ One folder of plain files where all your GTM context lives: what you sell, your 
 
 One-off additions work too. **"add {company} and research it"** onboards a single company. Useful for net-new targets that aren't in your CRM yet.
 
-The setup routine and context rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically. Any agent landing in this folder already knows how to behave.
+The setup routine and context rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically. Any agent you connect already knows how to behave.
 
 ## Layout
 
