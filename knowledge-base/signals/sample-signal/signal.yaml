@@ -5,7 +5,7 @@ version: 1
 status: draft
 
 detection:
-  provider: # which connected tool detects this signal: extruct | apollo | web-search | crm | email | meetings
+  provider: # name of the connected tool that detects this — e.g. apollo, exa, predictleads, crustdata, attio, gong
   query: # what to look for, in the provider's terms
 
 components:
