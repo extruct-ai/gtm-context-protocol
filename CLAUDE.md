@@ -9,7 +9,7 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 - Create new assets by copying the matching `sample-*` template, renaming it, and updating every `id` in the manifest. Never leave `sample` IDs behind.
 - IDs are permanent. Renaming updates `path` in the manifest, never `id`.
 - Format separation: YAML = structure and links, Markdown = human-readable knowledge, JSONL = append-only raw data (never rewrite history), CSV = membership lists.
-- Signal occurrences are appended to `companies/{name}/research/raw-signals.jsonl` with `signal-event.{company}.{signal}.{date}` IDs; distill validated ones into `research/signals.md`.
+- Signal occurrences are appended to `companies/{name}/research/raw-signals.jsonl` with `signal-event.{company}.{signal}.{date}` IDs; record the keep/drop judgment and ranking in `research/distillation.md`, then write the survivors into `research/signals.md`.
 - Keep `status` honest: `draft` → `active` → `paused` → `archived`.
 
 ## Placement rules
@@ -26,6 +26,7 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 | Company research narrative | `companies/{name}/context/context.md` |
 | Raw CRM / meeting / email data | `companies/{name}/context/raw/*.jsonl` |
 | Detected signals (raw) | `companies/{name}/research/raw-signals.jsonl` |
+| Keep/drop judgment and ranking | `companies/{name}/research/distillation.md` |
 | Distilled signals | `companies/{name}/research/signals.md` |
 | Org chart and people | `companies/{name}/org-chart/` |
 | Campaign membership | `campaigns/{name}/companies.csv` (by `company_id`) |
@@ -34,7 +35,7 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 
 ## Setup routine — "set up my GTM context"
 
-1. Check MCP connections: CRM, email, meeting recorder, sequencer, enrichment. Report what's connected and what's missing (missing ones are fine — degrade gracefully).
+1. Check MCP connections: CRM, email, meeting recorder, sequencer, enrichment, search, intent data. List the tools each server actually exposes, not just the server names — that inventory is what signal detection and ETL get written against. Report what's connected and what's missing (missing ones are fine — degrade gracefully).
 2. Interview the user: what they sell, who buys it (personas), common objections, main competitors.
 3. Fill `knowledge-base/definition.md` and the subfolders (`product/`, `personas/`, `use-cases/`, `objections/`, `competitors/`) — one markdown file per item.
 4. Set `knowledge-base.yaml` status to `active`.
@@ -43,7 +44,7 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 ## Defining signals — "define my signals"
 
 1. Ask the user which events mean buying intent for them (funding, hiring, leadership change, tech adoption, expansion). One signal = one observable event.
-2. For each signal, ask which provider detects it: enrichment (Extruct), prospecting data (Apollo), web search, CRM activity, email, meeting transcripts. Write provider and query into the `detection` block of the signal's `signal.yaml`. This is the point of a signal definition: detection lives in the signal, in one place, never inside a workflow.
+2. For each signal, ask which tool detects it. Don't recite a fixed menu — check what the user actually has connected and propose from that. Categories worth covering: enrichment, search and scraping, intent and hiring data, CRM activity, email, meeting transcripts. Write the tool's name and its query into the `detection` block of the signal's `signal.yaml`. `provider` is a free string naming the connected integration (`apollo`, `exa`, `predictleads`, `crustdata`, `attio`, `gong`) — there is no fixed set, and each category has dozens of viable sources. This is the point of a signal definition: detection lives in the signal, in one place, never inside a workflow.
 3. Copy `knowledge-base/signals/sample-signal` into a new signal asset, update its IDs, and write `definition.md`: what the signal means, what evidence counts.
 4. Set each signal's status to `active`. Never create signals the user didn't confirm.
 
@@ -52,8 +53,9 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 1. Confirm scope: all active companies, or the subset the user names.
 2. For each company, run every active signal through its declared provider (the `detection` block in its `signal.yaml`). No signal without a provider; ask the user to complete the definition instead of improvising sources.
 3. Append each occurrence to `research/raw-signals.jsonl` (signal-event ID, source, status `unvalidated`).
-4. Distill into `research/signals.md`: what fired, the evidence, a suggested angle.
-5. Report back: companies checked, occurrences found, strongest signals first.
+4. Cut the noise in `research/distillation.md`: which detections were junk and why, which are real, and how the real ones rank. Detection returns coincidences, stale news, and same-name companies — never pass raw hits through unfiltered.
+5. Write the survivors into `research/signals.md` in priority order: what fired, the evidence, a suggested angle.
+6. Report back: companies checked, occurrences found, strongest signals first.
 
 ## Syncing companies — "sync my companies" / "sync my CRM"
 
@@ -72,7 +74,7 @@ For a net-new target that isn't in the CRM yet, or a deep one-off.
 1. Copy `companies/sample-company` → `companies/{company-slug}`; update all IDs in `company.yaml`; fill `identity` (domain, `crm_id` from the CRM if it exists there).
 2. Pull available history via MCP — CRM record and activity, meetings, emails — into `context/raw/*.jsonl`.
 3. Write `context/context.md`: the current state of the relationship, grounded in that raw data.
-4. Research the company against the knowledge-base signals; append hits to `research/raw-signals.jsonl` and summarize in `research/signals.md`.
+4. Research the company against the knowledge-base signals; append hits to `research/raw-signals.jsonl`, record the keep/drop calls in `research/distillation.md`, and summarize the survivors in `research/signals.md`.
 5. Set status to `active`.
 
 ## Creating a campaign — "create a campaign for {segment}"

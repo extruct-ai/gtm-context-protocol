@@ -79,6 +79,27 @@ or add them as connectors in claude.ai. What you connect determines what the con
 
 Connect what you have. Missing tools are fine — the agent reports what's connected at setup and works with the rest. A signal whose provider isn't connected simply doesn't run, and it says so rather than silently substituting a different source.
 
+### How data actually lands
+
+Connecting a tool doesn't move anything by itself. Every connector runs the same three steps:
+
+1. **Extract** — call the tool over MCP for one company or one batch.
+2. **Load raw, unchanged** — append to `companies/{name}/context/raw/*.jsonl`, one JSON object per record, carrying its source and timestamp. Signal hits go to `research/raw-signals.jsonl` the same way. Append-only: never rewrite, never reorder.
+3. **Transform** — a second pass reads raw and rewrites the derived files: `context.md`, `engagement.md`, `distillation.md`, `signals.md`.
+
+The discipline is one rule: **raw is immutable, derived is disposable.** A bad distillation you delete and re-derive from raw. Lost raw is lost for good. That's also what makes re-runs cheap — dedupe on the source record id, append only what's new, and refresh a derived file only when its inputs changed.
+
+### Writing a connector
+
+This is the least trivial part, especially against a tool whose docs you don't have. What makes it tractable:
+
+- **Start from the schema, not the docs.** MCP servers are self-describing — the agent can list a server's tools and their input/output schemas and work from that. For anything not MCP (a REST API, a CSV export), give it the docs URL, or better, one real response payload. A single example teaches the shape faster than any prose description.
+- **Treat the first run as discovery, then freeze it.** Getting the call right is exploratory and you should expect to iterate. The moment it works, write down what worked in `orchestration/prompts/{tool}.md`: which call, which fields, how they map onto the raw record. Skip this and every run re-derives the mapping, and two runs won't agree with each other.
+- **Move the deterministic parts into `orchestration/scripts/`.** Dedupe keys, ID generation, field mapping, date normalization — a model should not re-decide these each run. Prompts for judgment, scripts for mechanics.
+- **Write down what you couldn't get.** A field the provider doesn't expose, a rate limit, an endpoint that needs a paid tier — that's a fact about the connector and belongs next to it. Otherwise the next person rediscovers it the hard way.
+
+Nothing here is generated for you yet: `orchestration/prompts/` and `orchestration/scripts/` ship empty, and the connectors are yours to write against your own stack.
+
 ## Layout
 
 ```text
