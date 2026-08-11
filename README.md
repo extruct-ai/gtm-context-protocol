@@ -97,9 +97,9 @@ The `sample-*` assets are empty, pre-wired templates. To create an asset, copy o
 | `framework.md` | The account scored against your qualification framework. Empty until you name one — MEDDIC, MEDDPICC, BANT, your own |
 | `org-chart/orgchart.md` | The buying unit: who decides, who blocks, who reports to whom |
 | `org-chart/people/*.md` | One file per person — role, history with you, what they care about |
-| `research/raw-signals.jsonl` | Every signal occurrence, appended with its source and provenance |
-| `research/signals.md` | The validated ones distilled: what fired, the evidence, a suggested angle |
-| `research/distillation.md` | What the research adds up to — the account thesis you act on |
+| `research/raw-signals.jsonl` | Every detection, appended with its source and provenance — noise included |
+| `research/distillation.md` | The filter: which detections were real and which were false positives. Keeps junk out of `signals.md` |
+| `research/signals.md` | What survived: what fired, the evidence, a suggested angle |
 | `company.yaml` | Record card: ID, status, domain, CRM id, components, links |
 | `crm.yaml` | Pointer to the CRM record — provider, record id, last sync. It binds to the record; it never mirrors it |
 
@@ -153,9 +153,11 @@ This is the point of the whole design: **detection lives in the signal, in one p
 
 **3. Collect occurrences.** Every hit is appended to that company's `research/raw-signals.jsonl` — its own ID (`signal-event.acme.new-fund.2026-08-01`), which signal fired, what detected it, when, the source, and `status: unvalidated`. Append-only, so you keep the full detection history and can tell a signal that keeps firing from one that fired once.
 
-**4. Distill.** `research/signals.md` keeps the ones that hold up: what fired, the evidence, a suggested angle. `research/distillation.md` is the step after — where a list of signals becomes an account thesis: what these facts together say about this account, and what to do about it.
+**4. Cut the noise.** Detection is noisy: providers return coincidences, stale news, and the wrong company with a similar name. `research/distillation.md` is the pass that throws those out — which detections are real, which are false positives. Nothing reaches you unfiltered, and the raw log stays intact so a rejection can be revisited.
 
-The chain runs: signal definition → occurrence → company → campaign. The definition is reusable, the occurrence is evidence with provenance attached.
+**5. Keep what survives.** `research/signals.md` holds the real ones: what fired, the evidence, a suggested angle.
+
+The chain runs: signal definition → occurrence → distillation → company → campaign. The definition is reusable, the occurrence is evidence with provenance attached.
 
 ## Orchestration
 
