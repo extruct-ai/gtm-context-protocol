@@ -62,21 +62,22 @@ claude mcp list
 
 or add them as connectors in claude.ai. What you connect determines what the context can do:
 
-| Connect | Powers | `provider` value |
-| ------- | ------ | ---------------- |
-| CRM — Attio, HubSpot, Pipedrive | Account sync, contacts, activity-based signals | `crm` |
-| Enrichment — Extruct | Company research, firmographic and intent signals | `extruct` |
-| Prospecting DB — Apollo, ZoomInfo | People, headcount, hiring and job-change signals | `apollo` |
-| Web search | Funding, launches, news, leadership changes | `web-search` |
-| Email — Gmail, Outlook | Thread history, reply and engagement signals | `email` |
-| Meeting recorder — Granola, Gong | Transcripts, what was actually said on calls | `meetings` |
-| Sequencer — Instantly, Apollo | Campaign execution | *(campaigns, not detection)* |
+| Category | Powers | Examples |
+| -------- | ------ | -------- |
+| **Enrichment** | Firmographics, contacts, emails, tech stack | Extruct, Apollo, People Data Labs, Crustdata, ContactOut, Hunter, Lusha, LeadMagic, RocketReach, FullEnrich, Prospeo, Wiza, Findymail |
+| **Search & scraping** | Funding, launches, news, any public page | Exa, Serper, Firecrawl, Apify, Browserbase, DataForSEO |
+| **Intent & hiring signals** | Job postings, tech adoption, ad audiences | PredictLeads, TheirStack, Sumble, BuiltWith, Bloomberry, Google / LinkedIn / Meta Ads Audiences |
+| **CRM** | Account sync, contacts, activity history | Attio, HubSpot, Salesforce, Pipedrive |
+| **Meetings** | Transcripts — what was actually said on calls | Gong, Granola, Fireflies.ai, Attention |
+| **Email & messaging** | Thread history, replies, engagement | Gmail, Google Workspace, Outlook, Slack, Intercom |
+| **Sequencing** | Campaign execution | Instantly, Outreach, Lemlist, Smartlead, HeyReach, Amplemarket, Nooks |
+| **Warehouse** | Cross-company queries once files stop scaling | Snowflake, ClickHouse, BigQuery |
 
-**Signals** name one of these in their `detection` block, and that's the only place the binding lives. **Research** uses the same connections: `research my companies` walks every active signal through its declared provider, and for a one-off question on a single account you point the agent at whichever provider can answer it.
+`provider` in a signal is just the name of the tool you connected — `apollo`, `exa`, `predictleads`, `attio`, `gong`. It is a free string, not a fixed enum: there are dozens of viable sources per category and no list would stay current. Name the one you actually connected.
 
-Connect what you have. Missing tools are fine — the agent reports what's connected at setup and works with the rest. A signal whose provider isn't connected simply doesn't run, and it will tell you so rather than silently substituting a different source.
+**Signals** name a provider in their `detection` block, and that's the only place the binding lives. **Research** uses the same connections: `research my companies` walks every active signal through its declared provider, and for a one-off question on a single account you point the agent at whichever tool can answer it.
 
-The provider list is a starting set, not a closed enum — nothing validates it today, and the agent reads the string. If your tool isn't listed, use its name (`crunchbase`, `gong`, `linkedin`) and connect the matching MCP server.
+Connect what you have. Missing tools are fine — the agent reports what's connected at setup and works with the rest. A signal whose provider isn't connected simply doesn't run, and it says so rather than silently substituting a different source.
 
 ## Layout
 
@@ -172,11 +173,11 @@ A signal is one observable event that means someone might be ready to buy — a 
 
 ```yaml
 detection:
-  provider: extruct        # extruct | apollo | web-search | crm | email | meetings
+  provider: predictleads   # name of a connected tool — apollo, exa, crustdata, attio, gong, …
   query: "announced a new fund OR closed fund"
 ```
 
-`provider` is one of your connected tools ([the table above](#connecting-your-tools)); `query` is what to look for, in that tool's terms.
+`provider` names whichever tool you connected ([categories and examples above](#connecting-your-tools)); `query` is what to look for, in that tool's terms.
 
 This is the point of the whole design: **detection lives in the signal, in one place** — never buried inside a workflow. Swap enrichment for web search later and everything that consumes the signal follows, with nothing else to edit. A signal with no provider doesn't run — the agent will ask you to finish the definition rather than improvise a source.
 

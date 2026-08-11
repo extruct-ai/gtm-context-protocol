@@ -85,9 +85,11 @@ A signal definition declares its own detection. The `detection` block in `signal
 
 ```yaml
 detection:
-  provider: web-search      # extruct | apollo | web-search | crm | email | meetings | ...
+  provider: predictleads    # name of a connected tool — apollo, exa, crustdata, attio, gong, …
   query: "announced a new fund OR closed fund"
 ```
+
+`provider` is a free string naming whichever integration you connected, not a fixed enum — enrichment, search, intent, CRM, meetings and messaging each have dozens of viable sources, and pinning a closed list into the spec would only go stale.
 
 Workflows read this block instead of hardcoding sources. One signal, one place to change how it's detected.
 
