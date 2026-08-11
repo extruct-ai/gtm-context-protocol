@@ -51,6 +51,33 @@ One-off additions work too. **"add {company} and research it"** onboards a singl
 
 The setup routine and context rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically. Any agent you connect already knows how to behave.
 
+## Connecting your tools
+
+Nothing is bundled. This repo names providers; your MCP connections supply them. Add them once:
+
+```bash
+claude mcp add extruct --transport http https://mcp.extruct.ai/mcp
+claude mcp list
+```
+
+or add them as connectors in claude.ai. What you connect determines what the context can do:
+
+| Connect | Powers | `provider` value |
+| ------- | ------ | ---------------- |
+| CRM — Attio, HubSpot, Pipedrive | Account sync, contacts, activity-based signals | `crm` |
+| Enrichment — Extruct, Clay | Company research, firmographic and intent signals | `extruct` |
+| Prospecting DB — Apollo | People, headcount, hiring and job-change signals | `apollo` |
+| Web search | Funding, launches, news, leadership changes | `web-search` |
+| Email — Gmail, Outlook | Thread history, reply and engagement signals | `email` |
+| Meeting recorder — Granola, Gong | Transcripts, what was actually said on calls | `meetings` |
+| Sequencer — Instantly, Apollo | Campaign execution | *(campaigns, not detection)* |
+
+**Signals** name one of these in their `detection` block, and that's the only place the binding lives. **Research** uses the same connections: `research my companies` walks every active signal through its declared provider, and for a one-off question on a single account you point the agent at whichever provider can answer it.
+
+Connect what you have. Missing tools are fine — the agent reports what's connected at setup and works with the rest. A signal whose provider isn't connected simply doesn't run, and it will tell you so rather than silently substituting a different source.
+
+The provider list is a starting set, not a closed enum — nothing validates it today, and the agent reads the string. If your tool isn't listed, use its name (`clay`, `gong`, `linkedin`) and connect the matching MCP server.
+
 ## Layout
 
 ```text
@@ -98,7 +125,7 @@ The `sample-*` assets are empty, pre-wired templates. To create an asset, copy o
 | `org-chart/orgchart.md` | The buying unit: who decides, who blocks, who reports to whom |
 | `org-chart/people/*.md` | One file per person — role, history with you, what they care about |
 | `research/raw-signals.jsonl` | Every detection, appended with its source and provenance — noise included |
-| `research/distillation.md` | The filter: which detections were real and which were false positives. Keeps junk out of `signals.md` |
+| `research/distillation.md` | The judgment record: which detections were junk and why, which were real, and how the real ones rank |
 | `research/signals.md` | What survived: what fired, the evidence, a suggested angle |
 | `company.yaml` | Record card: ID, status, domain, CRM id, components, links |
 | `crm.yaml` | Pointer to the CRM record — provider, record id, last sync. It binds to the record; it never mirrors it |
@@ -149,13 +176,15 @@ detection:
   query: "announced a new fund OR closed fund"
 ```
 
-This is the point of the whole design: **detection lives in the signal, in one place** — never buried inside a workflow. Point a signal at enrichment (Extruct, Clay), at Apollo, at web search, at your own CRM activity, at your inbox, or at meeting transcripts. Swap the provider later and everything that consumes the signal follows, with nothing else to edit. A signal with no provider doesn't run — the agent will ask you to finish the definition rather than improvise a source.
+`provider` is one of your connected tools ([the table above](#connecting-your-tools)); `query` is what to look for, in that tool's terms.
+
+This is the point of the whole design: **detection lives in the signal, in one place** — never buried inside a workflow. Swap enrichment for web search later and everything that consumes the signal follows, with nothing else to edit. A signal with no provider doesn't run — the agent will ask you to finish the definition rather than improvise a source.
 
 **3. Collect occurrences.** Every hit is appended to that company's `research/raw-signals.jsonl` — its own ID (`signal-event.acme.new-fund.2026-08-01`), which signal fired, what detected it, when, the source, and `status: unvalidated`. Append-only, so you keep the full detection history and can tell a signal that keeps firing from one that fired once.
 
-**4. Cut the noise.** Detection is noisy: providers return coincidences, stale news, and the wrong company with a similar name. `research/distillation.md` is the pass that throws those out — which detections are real, which are false positives. Nothing reaches you unfiltered, and the raw log stays intact so a rejection can be revisited.
+**4. Cut the noise and rank the rest.** Detection is noisy: providers return coincidences, stale news, and the wrong company with a similar name. `research/distillation.md` is where those get thrown out and the survivors get ordered — it holds the judgment calls themselves: this detection was junk *because X*, this one is real, and this is why it outranks the others. Writing down the reasoning is the point. It's a record you can revisit and argue with, and it's how signal prioritization stays consistent across accounts instead of being re-decided from scratch every run. The raw log stays intact underneath, so a rejection can always be reopened.
 
-**5. Keep what survives.** `research/signals.md` holds the real ones: what fired, the evidence, a suggested angle.
+**5. Keep what survives.** `research/signals.md` holds the real ones in priority order: what fired, the evidence, a suggested angle.
 
 The chain runs: signal definition → occurrence → distillation → company → campaign. The definition is reusable, the occurrence is evidence with provenance attached.
 

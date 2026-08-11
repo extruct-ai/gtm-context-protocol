@@ -85,7 +85,7 @@ A signal definition declares its own detection. The `detection` block in `signal
 
 ```yaml
 detection:
-  provider: web-search      # extruct | apollo | web-search | crm | email | meetings
+  provider: web-search      # extruct | apollo | web-search | crm | email | meetings | ...
   query: "announced a new fund OR closed fund"
 ```
 
