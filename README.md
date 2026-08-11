@@ -92,10 +92,7 @@ The `sample-*` assets are empty, pre-wired templates. To create an asset, copy o
 | File | Holds |
 | ---- | ----- |
 | `context/context.md` | The narrative: where the relationship stands, what's been said, what's open. Rewritten from raw data whenever something changes |
-| `context/raw/events.jsonl` | CRM activity, stage moves, meetings — one record per event, appended, never rewritten |
-| `context/raw/messages.jsonl` | Email threads and call transcripts as raw records |
-| `context/raw/entities.jsonl` | People, tools, products and other entities pulled out of those records |
-| `context/raw/graph.json` | How those entities relate — the account graph |
+| `context/raw/` | Everything raw, as it arrived: CRM events, email threads and call transcripts, extracted entities, and the account graph. Appended, never rewritten, so the history stays intact |
 | `engagement.md` | Depth of penetration: who has been touched, how often, on which channel, with what response |
 | `framework.md` | The account scored against your qualification framework. Empty until you name one — MEDDIC, MEDDPICC, BANT, your own |
 | `org-chart/orgchart.md` | The buying unit: who decides, who blocks, who reports to whom |
@@ -137,6 +134,28 @@ This is the part worth doing by hand. `definition.md` states what you sell in on
 | `signals/` | One folder per signal: what it means, what evidence counts, which provider detects it |
 
 Everything in here is true regardless of who you're talking to. Anything that's only true for one audience belongs in a campaign; anything true for one account belongs in that company's folder.
+
+## Signals, end to end
+
+A signal is one observable event that means someone might be ready to buy — a fund closed, a first RevOps hire, a new CTO, a tool swapped out. You define it once and every company gets checked against it.
+
+**1. Define it.** `knowledge-base/signals/{name}/definition.md` says what the signal means and what evidence actually counts. This is a claim you can be wrong about, so write it that way.
+
+**2. Connect a provider.** The `detection` block in `signal.yaml` names which of your connected tools goes looking, and what it looks for:
+
+```yaml
+detection:
+  provider: extruct        # extruct | apollo | web-search | crm | email | meetings
+  query: "announced a new fund OR closed fund"
+```
+
+This is the point of the whole design: **detection lives in the signal, in one place** — never buried inside a workflow. Point a signal at enrichment (Extruct, Clay), at Apollo, at web search, at your own CRM activity, at your inbox, or at meeting transcripts. Swap the provider later and everything that consumes the signal follows, with nothing else to edit. A signal with no provider doesn't run — the agent will ask you to finish the definition rather than improvise a source.
+
+**3. Collect occurrences.** Every hit is appended to that company's `research/raw-signals.jsonl` — its own ID (`signal-event.acme.new-fund.2026-08-01`), which signal fired, what detected it, when, the source, and `status: unvalidated`. Append-only, so you keep the full detection history and can tell a signal that keeps firing from one that fired once.
+
+**4. Distill.** `research/signals.md` keeps the ones that hold up: what fired, the evidence, a suggested angle. `research/distillation.md` is the step after — where a list of signals becomes an account thesis: what these facts together say about this account, and what to do about it.
+
+The chain runs: signal definition → occurrence → company → campaign. The definition is reusable, the occurrence is evidence with provenance attached.
 
 ## Orchestration
 
