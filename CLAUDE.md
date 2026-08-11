@@ -43,7 +43,7 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 ## Defining signals — "define my signals"
 
 1. Ask the user which events mean buying intent for them (funding, hiring, leadership change, tech adoption, expansion). One signal = one observable event.
-2. For each signal, ask which provider detects it: enrichment (Extruct, Clay), web search, CRM activity, email, meeting transcripts. Write provider and query into the `detection` block of the signal's `signal.yaml`. This is the point of a signal definition: detection lives in the signal, in one place, never inside a workflow.
+2. For each signal, ask which provider detects it: enrichment (Extruct), prospecting data (Apollo), web search, CRM activity, email, meeting transcripts. Write provider and query into the `detection` block of the signal's `signal.yaml`. This is the point of a signal definition: detection lives in the signal, in one place, never inside a workflow.
 3. Copy `knowledge-base/signals/sample-signal` into a new signal asset, update its IDs, and write `definition.md`: what the signal means, what evidence counts.
 4. Set each signal's status to `active`. Never create signals the user didn't confirm.
 

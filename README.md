@@ -30,7 +30,7 @@ The knowledge base is where your time actually pays off. Everything else an agen
 
 ## Prerequisites
 
-- MCP connections to your GTM stack: at minimum your CRM (Attio, HubSpot, Pipedrive); ideally also email (Gmail, Outlook), meeting recorder (Granola, Gong), sequencer (Instantly, Apollo), and enrichment (Extruct, Clay)
+- MCP connections to your GTM stack: at minimum your CRM (Attio, HubSpot, Pipedrive); ideally also email (Gmail, Outlook), meeting recorder (Granola, Gong), sequencer (Instantly, Apollo), and enrichment (Extruct)
 - Claude Code, Codex, Cursor
 
 ## Quickstart
@@ -65,8 +65,8 @@ or add them as connectors in claude.ai. What you connect determines what the con
 | Connect | Powers | `provider` value |
 | ------- | ------ | ---------------- |
 | CRM — Attio, HubSpot, Pipedrive | Account sync, contacts, activity-based signals | `crm` |
-| Enrichment — Extruct, Clay | Company research, firmographic and intent signals | `extruct` |
-| Prospecting DB — Apollo | People, headcount, hiring and job-change signals | `apollo` |
+| Enrichment — Extruct | Company research, firmographic and intent signals | `extruct` |
+| Prospecting DB — Apollo, ZoomInfo | People, headcount, hiring and job-change signals | `apollo` |
 | Web search | Funding, launches, news, leadership changes | `web-search` |
 | Email — Gmail, Outlook | Thread history, reply and engagement signals | `email` |
 | Meeting recorder — Granola, Gong | Transcripts, what was actually said on calls | `meetings` |
@@ -76,7 +76,7 @@ or add them as connectors in claude.ai. What you connect determines what the con
 
 Connect what you have. Missing tools are fine — the agent reports what's connected at setup and works with the rest. A signal whose provider isn't connected simply doesn't run, and it will tell you so rather than silently substituting a different source.
 
-The provider list is a starting set, not a closed enum — nothing validates it today, and the agent reads the string. If your tool isn't listed, use its name (`clay`, `gong`, `linkedin`) and connect the matching MCP server.
+The provider list is a starting set, not a closed enum — nothing validates it today, and the agent reads the string. If your tool isn't listed, use its name (`crunchbase`, `gong`, `linkedin`) and connect the matching MCP server.
 
 ## Layout
 
