@@ -141,7 +141,7 @@ The `sample-*` assets are empty, pre-wired templates. To create an asset, copy o
 | ---- | ----- |
 | `context/context.md` | The narrative: where the relationship stands, what's been said, what's open. Rewritten from raw data whenever something changes |
 | `context/raw/` | Everything raw, as it arrived: CRM events, email threads and call transcripts, extracted entities. Appended, never rewritten, so the history stays intact |
-| `engagement.md` | Depth of penetration: who has been touched, how often, on which channel, with what response |
+| `engagement.md` | Depth of penetration, as a derived digest: who has been touched, how often, on which channel, with what response — regenerated from raw data and live CRM/sequencer reads, every line naming its source |
 | `framework.md` | The account scored against your qualification framework. Empty until you name one — MEDDIC, MEDDPICC, BANT, your own |
 | `org-chart/orgchart.md` | The buying unit: who decides, who blocks, who reports to whom |
 | `org-chart/people/*.md` | One file per person — role, history with you, what they care about |

@@ -177,6 +177,18 @@ The occurrence ID is `signal-event.{company}.{signal}.{YYYY-MM-DD}.{source-key}`
 
 Chain: signal definition → signal occurrence → company → campaign → workflow.
 
+## Derived files: attribution, and the mirror rule
+
+Raw is immutable, derived is disposable — and a derived file must show its work. Every claim in a derived markdown file (`context.md`, `engagement.md`, `framework.md`, `signals.md`, org-chart files) carries an attribution tag:
+
+- `[VERIFIED: source]` — grounded in a raw record or a live tool read; name the source.
+- `[INFERRED: reasoning]` — a judgment call; name the reasoning.
+- `[UNVERIFIABLE]` — stated but uncheckable; use sparingly.
+
+`engagement.md` is the strictest case: it digests **instrumented state** (touches, sends, replies) that the CRM and sequencer own. It mirrors, it never owns — regenerate it from raw plus live reads; never hand-edit it, and never treat it as the source for a number the owning system can answer.
+
+The empty template files carry their payload shape as HTML comments — section headings and guidance, invisible when rendered. The comments say what a filled file looks like; the empty-slot rule still holds: content comes from the user or from raw data, never from invention.
+
 ## Format separation
 
 | Format   | Holds                                                          |

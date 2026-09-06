@@ -16,7 +16,8 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 
 - Before placing any fact, apply the **boundary test**: *if this fact changed, what else would have to change?* If the answer crosses a folder boundary, it's in the wrong folder. Semantics: `knowledge-base/` = true regardless of audience; `campaigns/` = what we do to a population; `companies/` = one specific account; `orchestration/` = what runs. (Full definitions in `PROTOCOL.md`.)
 - **The repo holds policy; the CRM holds state.** Stage, owner, last touch live in the CRM — never copy them into markdown or CSV. The `crm:` block in `company.yaml` binds to the record; it doesn't mirror it. `companies.csv` is membership only (`company_id, enrolled_at, status`).
-- **Never fill an empty template slot with invented content.** An empty `voice.md` or `cadence.md` means *not decided yet*: ask the user or derive from raw data, otherwise leave it empty and keep the asset `draft`.
+- **Never fill an empty template slot with invented content.** An empty `voice.md` or `cadence.md` means *not decided yet*: ask the user or derive from raw data, otherwise leave it empty and keep the asset `draft`. The HTML comment at the top of each template file is the payload spec — follow its sections when filling, and leave it in place.
+- **Tag every claim in derived files.** `context.md`, `engagement.md`, `framework.md`, `signals.md`, and org-chart files carry `[VERIFIED: source]` / `[INFERRED: reasoning]` / `[UNVERIFIABLE]` on each claim. `engagement.md` is a regenerated mirror of CRM/sequencer state — re-derive it, never hand-edit it.
 - **Don't hoist shared tactics into the knowledge base.** If several campaigns share a cadence or voice, duplicate it at campaign level — the KB only takes audience-independent truth.
 
 ## Where things go
