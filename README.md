@@ -119,12 +119,11 @@ Nothing here is generated for you yet: `orchestration/prompts/` and `orchestrati
 ├── companies/
 │   └── sample-company/
 │       ├── company.yaml
-│       ├── context/        # context.md + raw/ (events, messages, entities, graph)
+│       ├── context/        # context.md + raw/ (events, messages, entities)
 │       ├── research/       # signals.md, distillation.md, raw-signals.jsonl
 │       ├── org-chart/      # orgchart.md + people/ (one .md per person)
 │       ├── framework.md
-│       ├── engagement.md
-│       └── crm.yaml
+│       └── engagement.md
 │
 └── campaigns/
     └── sample-campaign/
@@ -134,14 +133,14 @@ Nothing here is generated for you yet: `orchestration/prompts/` and `orchestrati
         ├── cadence.md  knowledge.md
 ```
 
-The `sample-*` assets are empty, pre-wired templates. To create an asset, copy one, rename it, and update the IDs in its manifest. Or just ask the agent, which does exactly that.
+The `sample-*` assets are empty, pre-wired templates. To create an asset, copy one, rename it, and update the single `id` line in its manifest — component IDs are derived from the asset ID, so there is nothing else to rewrite. Or just ask the agent, which does exactly that.
 
 ### Inside a company folder
 
 | File | Holds |
 | ---- | ----- |
 | `context/context.md` | The narrative: where the relationship stands, what's been said, what's open. Rewritten from raw data whenever something changes |
-| `context/raw/` | Everything raw, as it arrived: CRM events, email threads and call transcripts, extracted entities, and the account graph. Appended, never rewritten, so the history stays intact |
+| `context/raw/` | Everything raw, as it arrived: CRM events, email threads and call transcripts, extracted entities. Appended, never rewritten, so the history stays intact |
 | `engagement.md` | Depth of penetration: who has been touched, how often, on which channel, with what response |
 | `framework.md` | The account scored against your qualification framework. Empty until you name one — MEDDIC, MEDDPICC, BANT, your own |
 | `org-chart/orgchart.md` | The buying unit: who decides, who blocks, who reports to whom |
@@ -149,8 +148,7 @@ The `sample-*` assets are empty, pre-wired templates. To create an asset, copy o
 | `research/raw-signals.jsonl` | Every detection, appended with its source and provenance — noise included |
 | `research/distillation.md` | The judgment record: which detections were junk and why, which were real, and how the real ones rank |
 | `research/signals.md` | What survived: what fired, the evidence, a suggested angle |
-| `company.yaml` | Record card: ID, status, domain, CRM id, components, links |
-| `crm.yaml` | Pointer to the CRM record — provider, record id, last sync. It binds to the record; it never mirrors it |
+| `company.yaml` | Record card: ID, status, domain, the CRM binding (provider, record id — it binds to the record, never mirrors it), and per-source sync cursors |
 
 Stage, owner, and last touch stay in the CRM. The repo holds policy, the CRM holds state.
 
@@ -163,8 +161,8 @@ Stage, owner, and last touch stay in the CRM. The repo holds policy, the CRM hol
 | `text.md` | The actual copy — subject lines, bodies, variants |
 | `cadence.md` | The sequence: steps, timing, channels, exit rules |
 | `knowledge.md` | Which knowledge-base pieces this campaign leans on — personas, objections, proof |
-| `companies.csv` | Membership by `company_id` |
-| `campaign.yaml` | Record card, plus links to the knowledge base and the signals that feed it |
+| `companies.csv` | Membership by `company_id` — `company_id, enrolled_at, status`, nothing else. Step, timing, and owner are state and live in the sequencer and CRM |
+| `campaign.yaml` | Record card, plus links to the signals that feed it |
 
 You write the hypothesis, voice, and cadence with the agent. Your sequencer takes it from there over MCP.
 
@@ -202,7 +200,7 @@ detection:
 
 This is the point of the whole design: **detection lives in the signal, in one place** — never buried inside a workflow. Swap enrichment for web search later and everything that consumes the signal follows, with nothing else to edit. A signal with no provider doesn't run — the agent will ask you to finish the definition rather than improvise a source.
 
-**3. Collect occurrences.** Every hit is appended to that company's `research/raw-signals.jsonl` — its own ID (`signal-event.acme.new-fund.2026-08-01`), which signal fired, what detected it, when, the source, and `status: unvalidated`. Append-only, so you keep the full detection history and can tell a signal that keeps firing from one that fired once.
+**3. Collect occurrences.** Every hit is appended to that company's `research/raw-signals.jsonl` — its own ID (`signal-event.acme.new-fund.2026-08-01.pl-8842731` — dated, plus the provider's record id or a source-URL hash, so the ID doubles as the dedupe key), which signal fired, what detected it, when, the source, and `status: unvalidated`. Append-only, so you keep the full detection history and can tell a signal that keeps firing from one that fired once.
 
 **4. Cut the noise and rank the rest.** Detection is noisy: providers return coincidences, stale news, and the wrong company with a similar name. `research/distillation.md` is where those get thrown out and the survivors get ordered — it holds the judgment calls themselves: this detection was junk *because X*, this one is real, and this is why it outranks the others. Writing down the reasoning is the point. It's a record you can revisit and argue with, and it's how signal prioritization stays consistent across accounts instead of being re-decided from scratch every run. The raw log stays intact underneath, so a rejection can always be reopened.
 
@@ -224,6 +222,6 @@ The point of this folder is autonomy: you finish a call, the transcript lands in
 
 ## How everything stays connected
 
-Every company, campaign, and signal is a folder with one YAML record card. Think CRM object, but in a file. The card tells agents which files belong to the asset, what it's linked to, and which workflows touch it. Assets reference each other by stable ID (`company.acme`, `campaign.pe-rollups-eu`), never by file path. Renaming folders never breaks a workflow. There is no central registry to go stale. You'll rarely edit these cards by hand; agents maintain them.
+Every company, campaign, and signal is a folder with one thin YAML record card. Think CRM object, but in a file. The card holds only what the layout can't say — identity, status, bindings, links; which files belong to the asset follows from a fixed per-kind layout, so component IDs (`company.acme.context`) are derived, never stored. Assets reference each other by stable ID, never by file path, and every relationship is stored in exactly one place. There is no central registry to go stale. You'll rarely edit these cards by hand; agents maintain them.
 
-Full spec (manifest shape, ID conventions, workflow references, signal occurrences): [`PROTOCOL.md`](PROTOCOL.md).
+Full spec (manifest shape, ID conventions, layout table, link ownership, signal occurrences): [`PROTOCOL.md`](PROTOCOL.md).

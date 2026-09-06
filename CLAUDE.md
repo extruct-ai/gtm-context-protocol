@@ -4,18 +4,18 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 
 ## Rules
 
-- Reference assets by stable ID (`company.acme`), never by path. Resolve paths through the asset's YAML manifest.
-- Every asset folder has a manifest (`company.yaml`, `campaign.yaml`, `signal.yaml`, `knowledge-base.yaml`). When you add, move, or rename a file, update the manifest in the same change.
-- Create new assets by copying the matching `sample-*` template, renaming it, and updating every `id` in the manifest. Never leave `sample` IDs behind.
-- IDs are permanent. Renaming updates `path` in the manifest, never `id`.
+- Reference assets by stable ID (`company.acme`), never by path. Paths resolve by convention: the folder name is the ID's slug, and each asset kind has a fixed layout (the table in `PROTOCOL.md`). Component IDs are derived — `asset_id + "." + key` — never stored.
+- Every asset folder has a thin manifest (`company.yaml`, `campaign.yaml`, `signal.yaml`, `knowledge-base.yaml`) holding identity, status, bindings, and links — nothing derivable from layout. Never add files outside the fixed layout; if something has no slot, ask before inventing one.
+- Create new assets by copying the matching `sample-*` template, renaming the folder, and updating the `id` line in its manifest. Never leave `sample` IDs behind.
+- IDs are permanent, and the folder name is the ID slug — never rename an asset folder; create a new asset and archive the old one.
 - Format separation: YAML = structure and links, Markdown = human-readable knowledge, JSONL = append-only raw data (never rewrite history), CSV = membership lists.
-- Signal occurrences are appended to `companies/{name}/research/raw-signals.jsonl` with `signal-event.{company}.{signal}.{date}` IDs; record the keep/drop judgment and ranking in `research/distillation.md`, then write the survivors into `research/signals.md`.
+- Signal occurrences are appended to `companies/{name}/research/raw-signals.jsonl` with `signal-event.{company}.{signal}.{YYYY-MM-DD}.{source-key}` IDs, where `source-key` is the provider's record id or a short hash of the source URL. The ID is the dedupe key: never append a row whose ID already exists. Record the keep/drop judgment and ranking in `research/distillation.md`, then write the survivors into `research/signals.md`.
 - Keep `status` honest: `draft` → `active` → `paused` → `archived`.
 
 ## Placement rules
 
 - Before placing any fact, apply the **boundary test**: *if this fact changed, what else would have to change?* If the answer crosses a folder boundary, it's in the wrong folder. Semantics: `knowledge-base/` = true regardless of audience; `campaigns/` = what we do to a population; `companies/` = one specific account; `orchestration/` = what runs. (Full definitions in `PROTOCOL.md`.)
-- **The repo holds policy; the CRM holds state.** Stage, owner, last touch live in the CRM — never copy them into markdown. `crm.yaml` binds to the record; it doesn't mirror it.
+- **The repo holds policy; the CRM holds state.** Stage, owner, last touch live in the CRM — never copy them into markdown or CSV. The `crm:` block in `company.yaml` binds to the record; it doesn't mirror it. `companies.csv` is membership only (`company_id, enrolled_at, status`).
 - **Never fill an empty template slot with invented content.** An empty `voice.md` or `cadence.md` means *not decided yet*: ask the user or derive from raw data, otherwise leave it empty and keep the asset `draft`.
 - **Don't hoist shared tactics into the knowledge base.** If several campaigns share a cadence or voice, duplicate it at campaign level — the KB only takes audience-independent truth.
 
@@ -45,7 +45,7 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 
 1. Ask the user which events mean buying intent for them (funding, hiring, leadership change, tech adoption, expansion). One signal = one observable event.
 2. For each signal, ask which tool detects it. Don't recite a fixed menu — check what the user actually has connected and propose from that. Categories worth covering: enrichment, search and scraping, intent and hiring data, CRM activity, email, meeting transcripts. Write the tool's name and its query into the `detection` block of the signal's `signal.yaml`. `provider` is a free string naming the connected integration (`apollo`, `exa`, `predictleads`, `crustdata`, `attio`, `gong`) — there is no fixed set, and each category has dozens of viable sources. This is the point of a signal definition: detection lives in the signal, in one place, never inside a workflow.
-3. Copy `knowledge-base/signals/sample-signal` into a new signal asset, update its IDs, and write `definition.md`: what the signal means, what evidence counts.
+3. Copy `knowledge-base/signals/sample-signal` into a new signal asset, update its `id`, and write `definition.md`: what the signal means, what evidence counts.
 4. Set each signal's status to `active`. Never create signals the user didn't confirm.
 
 ## Researching companies — "research my companies"
@@ -62,16 +62,16 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 The primary flow: sync the user's book of business from their connected sources — CRM, email, meeting recorder, sequencer.
 
 1. Pull the account list from the CRM MCP. If it's large, confirm scope with the user first (all accounts, active deals only, a segment).
-2. For each account not yet in `companies/`: create the folder from `sample-company`, update all IDs, fill `identity` (domain, `crm_id`).
+2. For each account not yet in `companies/`: create the folder from `sample-company`, update the `id`, fill `identity` (domain, `crm_id`) and the `crm:` binding (provider, record id).
 3. Pull per-company history — CRM activity, meetings, emails, contacts — into `context/raw/*.jsonl`; contacts become entries under `org-chart/people/`.
-4. Write or refresh `context/context.md` for each company; record provider and sync timestamp in `crm.yaml`.
-5. Re-runs are incremental: skip companies with no new data, append new raw records (never rewrite), refresh `context.md` only where something changed.
+4. Write or refresh `context/context.md` for each company; advance the per-source cursors in the `sync:` block of `company.yaml`.
+5. Re-runs are incremental: start from each source's `sync:` cursor, append new raw records (never rewrite), refresh `context.md` only where something changed.
 
 ## Adding a single company — "add {company} and research it"
 
 For a net-new target that isn't in the CRM yet, or a deep one-off.
 
-1. Copy `companies/sample-company` → `companies/{company-slug}`; update all IDs in `company.yaml`; fill `identity` (domain, `crm_id` from the CRM if it exists there).
+1. Copy `companies/sample-company` → `companies/{company-slug}`; update the `id` in `company.yaml`; fill `identity` (domain, `crm_id` from the CRM if it exists there) and the `crm:` binding.
 2. Pull available history via MCP — CRM record and activity, meetings, emails — into `context/raw/*.jsonl`.
 3. Write `context/context.md`: the current state of the relationship, grounded in that raw data.
 4. Research the company against the knowledge-base signals; append hits to `research/raw-signals.jsonl`, record the keep/drop calls in `research/distillation.md`, and summarize the survivors in `research/signals.md`.
@@ -79,7 +79,7 @@ For a net-new target that isn't in the CRM yet, or a deep one-off.
 
 ## Creating a campaign — "create a campaign for {segment}"
 
-1. Copy `campaigns/sample-campaign` → `campaigns/{campaign-slug}`; update all IDs.
+1. Copy `campaigns/sample-campaign` → `campaigns/{campaign-slug}`; update the `id`.
 2. Write `hypothesis.md` (why this segment, why now), `voice.md`, `cadence.md` with the user.
-3. Enroll companies by adding rows to `companies.csv` — `company_id` only, never paths. Companies not yet in `companies/` get onboarded first (see above).
-4. Link the campaign to the knowledge base and relevant signals in `campaign.yaml`.
+3. Enroll companies by adding rows to `companies.csv` — `company_id, enrolled_at, status`, never paths and never execution state. Companies not yet in `companies/` get onboarded first (see above).
+4. Link the relevant signals in `campaign.yaml` (`links.signals`); name the knowledge-base pieces the campaign leans on in `knowledge.md`.

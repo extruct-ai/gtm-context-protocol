@@ -1,47 +1,7 @@
 id: campaign.sample-campaign
 kind: campaign
 name:
-version: 1
 status: draft
 
-components:
-  companies:
-    id: campaign.sample-campaign.companies
-    path: ./companies.csv
-    format: csv
-
-  hypothesis:
-    id: campaign.sample-campaign.hypothesis
-    path: ./hypothesis.md
-    format: markdown
-
-  voice:
-    id: campaign.sample-campaign.voice
-    path: ./voice.md
-    format: markdown
-
-  text:
-    id: campaign.sample-campaign.text
-    path: ./text.md
-    format: markdown
-
-  cadence:
-    id: campaign.sample-campaign.cadence
-    path: ./cadence.md
-    format: markdown
-
-  knowledge:
-    id: campaign.sample-campaign.knowledge
-    path: ./knowledge.md
-    format: markdown
-
 links:
-  knowledge_bases: []
   signals: []
-
-orchestration:
-  workflows:
-    enrollment: []
-    research: []
-    execution: []
-    synchronization: []
