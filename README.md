@@ -47,6 +47,8 @@ The knowledge base is where your time actually pays off. Everything else an agen
 6. Say **"research my companies"**. The agent checks every company against your signals and logs what it finds in `research/`.
 7. Open `companies/`. Your book of business is now files: context, signals, and research per company.
 
+Two more routines pick up from there: **"qualify my companies"** scores every account against the framework you name (MEDDIC, MEDDPICC, BANT, your own) into `framework.md`, and **"launch {campaign}"** pushes a finished campaign into your connected sequencer, recording the created IDs in `campaign.yaml`.
+
 One-off additions work too. **"add {company} and research it"** onboards a single company. Useful for net-new targets that aren't in your CRM yet.
 
 The setup routine and context rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically. Any agent you connect already knows how to behave.
@@ -164,7 +166,7 @@ Stage, owner, and last touch stay in the CRM. The repo holds policy, the CRM hol
 | `companies.csv` | Membership by `company_id` — `company_id, enrolled_at, status`, nothing else. Step, timing, and owner are state and live in the sequencer and CRM |
 | `campaign.yaml` | Record card, plus links to the signals that feed it |
 
-You write the hypothesis, voice, and cadence with the agent. Your sequencer takes it from there over MCP.
+You write the hypothesis, voice, and cadence with the agent. Your sequencer takes it from there over MCP — "launch {campaign}" creates the sequence from `text.md` + `cadence.md`, enrolls contacts, and records the created sequencer and enrichment IDs in `campaign.yaml` under `external:`, never in prose.
 
 ### Inside the knowledge base
 

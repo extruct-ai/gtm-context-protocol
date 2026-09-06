@@ -52,7 +52,7 @@ Beyond the header, each kind adds only what layout cannot express:
 | Kind | Extra blocks |
 | ---- | ------------ |
 | `company` | `identity` (domain, crm_id), `crm` (provider, record_id — the binding), `sync` (per-source cursors) |
-| `campaign` | `links.signals` (which signal definitions feed it) |
+| `campaign` | `links.signals` (which signal definitions feed it), `external` (sequencer and enrichment IDs created at launch — recorded here, never in prose) |
 | `signal` | `detection` (provider, query) |
 | `knowledge-base` | none |
 | `workflow` | `trigger`, `scope`, `steps` |
@@ -197,5 +197,7 @@ The empty template files carry their payload shape as HTML comments — section 
 | Markdown | Knowledge, context, hypotheses, messaging, definitions         |
 | JSONL    | Raw events, messages, entities, detected signal occurrences    |
 | CSV      | Lists and membership (which companies belong to a campaign)    |
+
+Every raw JSONL record carries a `source` (which connector produced it) and a `source_id` (the provider's own record id). Appending dedupes on `(source, source_id)` — a record whose pair already exists in the file is never appended again. Signal occurrences get this through their ID's source-key segment.
 
 YAML is the linking protocol across the GTM context; workflows describe what happens across the linked assets. `companies.csv` carries membership only — `company_id, enrolled_at, status` where `status` is enrollment policy (`enrolled | paused | exited`). Step, timing, outcomes, and owner are state and live in the sequencer and the CRM.

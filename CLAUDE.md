@@ -30,7 +30,10 @@ This folder is a file-based GTM context. You are the agent working in it. "The u
 | Keep/drop judgment and ranking | `companies/{name}/research/distillation.md` |
 | Distilled signals | `companies/{name}/research/signals.md` |
 | Org chart and people | `companies/{name}/org-chart/` |
+| Qualification scoring | `companies/{name}/framework.md` |
+| Engagement digest (derived mirror) | `companies/{name}/engagement.md` |
 | Campaign membership | `campaigns/{name}/companies.csv` (by `company_id`) |
+| External campaign IDs (sequencer, enrichment) | `campaigns/{name}/campaign.yaml` under `external:` — never in prose |
 | Reusable knowledge (product, personas, objections…) | `knowledge-base/` |
 | Reusable agent prompts / deterministic scripts | `orchestration/prompts/`, `orchestration/scripts/` |
 
@@ -64,8 +67,8 @@ The primary flow: sync the user's book of business from their connected sources 
 
 1. Pull the account list from the CRM MCP. If it's large, confirm scope with the user first (all accounts, active deals only, a segment).
 2. For each account not yet in `companies/`: create the folder from `sample-company`, update the `id`, fill `identity` (domain, `crm_id`) and the `crm:` binding (provider, record id).
-3. Pull per-company history — CRM activity, meetings, emails, contacts — into `context/raw/*.jsonl`; contacts become entries under `org-chart/people/`.
-4. Write or refresh `context/context.md` for each company; advance the per-source cursors in the `sync:` block of `company.yaml`.
+3. Pull per-company history — CRM activity, meetings, emails, contacts — into `context/raw/*.jsonl`. Every raw record carries `source` and `source_id`; dedupe on that pair. Contacts become entries under `org-chart/people/`, deduped on email (else LinkedIn URL), with the key in the file's frontmatter.
+4. Write or refresh `context/context.md` and the `engagement.md` digest for each company; advance the per-source cursors in the `sync:` block of `company.yaml`.
 5. Re-runs are incremental: start from each source's `sync:` cursor, append new raw records (never rewrite), refresh `context.md` only where something changed.
 
 ## Adding a single company — "add {company} and research it"
@@ -78,9 +81,23 @@ For a net-new target that isn't in the CRM yet, or a deep one-off.
 4. Research the company against the knowledge-base signals; append hits to `research/raw-signals.jsonl`, record the keep/drop calls in `research/distillation.md`, and summarize the survivors in `research/signals.md`.
 5. Set status to `active`.
 
+## Qualifying accounts — "qualify my companies"
+
+1. Check which framework is named in `knowledge-base/definition.md`. If none, ask the user (MEDDIC, MEDDPICC, BANT, custom) and record it there — never pick one silently.
+2. For each company in scope: score the account into `framework.md` from `context/raw/` and CRM history, every score tagged `[VERIFIED:]`/`[INFERRED:]`. A criterion the data can't answer stays empty — a gap is a finding.
+3. Refresh `engagement.md` (the derived digest) alongside.
+4. Report back: strongest accounts first, and the criteria most often unknown — that list is discovery homework.
+
 ## Creating a campaign — "create a campaign for {segment}"
 
 1. Copy `campaigns/sample-campaign` → `campaigns/{campaign-slug}`; update the `id`.
-2. Write `hypothesis.md` (why this segment, why now), `voice.md`, `cadence.md` with the user.
+2. Write `hypothesis.md` (why this segment, why now), `voice.md`, `cadence.md` with the user, then draft `text.md` in that voice for the user to approve.
 3. Enroll companies by adding rows to `companies.csv` — `company_id, enrolled_at, status`, never paths and never execution state. Companies not yet in `companies/` get onboarded first (see above).
 4. Link the relevant signals in `campaign.yaml` (`links.signals`); name the knowledge-base pieces the campaign leans on in `knowledge.md`.
+
+## Launching a campaign — "launch {campaign}"
+
+1. Preflight: status is `active`, `text.md` and `cadence.md` are non-empty, every `companies.csv` id resolves to a company folder, and contacts for the target personas exist under `org-chart/people/`. Fail the preflight loudly instead of launching a half-built campaign.
+2. Create the sequence in the connected sequencer via MCP from `text.md` + `cadence.md`; enroll the contacts. Confirm with the user before anything actually sends.
+3. Record every created external id in `campaign.yaml` under `external:` (sequencer, campaign ids, enrichment table) — never in prose.
+4. Ongoing performance is read live from the sequencer when asked — never copied into the repo.

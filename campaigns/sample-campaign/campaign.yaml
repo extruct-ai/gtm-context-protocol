@@ -5,3 +5,9 @@ status: draft
 
 links:
   signals: []
+
+# IDs created in external systems at launch — recorded here, never in prose.
+external:
+  sequencer: # e.g. instantly, apollo
+  sequencer_campaign_ids: []
+  enrichment_table: # e.g. an Extruct table id
