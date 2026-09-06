@@ -199,6 +199,8 @@ Checked in with the hook config plus a minimal permission allowlist (`python3 or
 
 ## Sequencing
 
+*Status: approved 2026-09-06; all four parts implemented as sequential commits on this branch (PR #2), one commit per part, in the order below.*
+
 | PR | Contents | Risk |
 | -- | -------- | ---- |
 | 1 | Part 1 + 2.3: thin manifests, fold `crm.yaml`, trim `companies.csv`, occurrence IDs, drop `graph.json`; `PROTOCOL.md` + `README.md` updated to match | Low — decisions already made in REVIEW.md |

@@ -51,7 +51,7 @@ Two more routines pick up from there: **"qualify my companies"** scores every ac
 
 One-off additions work too. **"add {company} and research it"** onboards a single company. Useful for net-new targets that aren't in your CRM yet.
 
-The setup routine and context rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically. Any agent you connect already knows how to behave.
+The context rules live in [`CLAUDE.md`](CLAUDE.md), which Claude Code loads automatically; each routine is a skill under `.claude/skills/`, loaded on demand by its trigger phrase (other agents follow the index in `CLAUDE.md`). A validator (`orchestration/scripts/validate.py`) runs after every edit and in CI, so the structure agents navigate by can't silently rot.
 
 ## Connecting your tools
 
