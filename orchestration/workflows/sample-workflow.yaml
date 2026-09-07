@@ -1,7 +1,6 @@
 id: workflow.sample-workflow
 kind: workflow
 name:
-version: 1
 status: draft
 
 trigger:

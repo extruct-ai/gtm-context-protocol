@@ -1,25 +1,8 @@
 id: signal.sample-signal
 kind: signal
 name:
-version: 1
 status: draft
 
 detection:
   provider: # name of the connected tool that detects this — e.g. apollo, exa, predictleads, crustdata, attio, gong
   query: # what to look for, in the provider's terms
-
-components:
-  definition:
-    id: signal.sample-signal.definition
-    path: ./definition.md
-    format: markdown
-
-links:
-  knowledge_base:
-    - kb
-  campaigns: []
-
-orchestration:
-  detected_by: []
-  validated_by: []
-  consumed_by: []
