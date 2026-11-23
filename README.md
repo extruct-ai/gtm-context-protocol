@@ -2,6 +2,8 @@
 
 The source of truth for your GTM work: what you sell, your signals, your companies, your campaigns. A system you connect your agents to. Plug in your tools over MCP (CRM, email, meeting recorder, sequencer, enrichment). Any agent then reads this context, works in it, and adds to it.
 
+Backed by [Grip](https://trygrip.io) — LinkedIn outreach for modern teams.
+
 ## What this is
 
 A template repo. Clone it once and it becomes your GTM context: your data fills it, your agents maintain it. "Protocol" means the rules that make every agent file things the same way. You don't need to read those rules. Your agent does. They live in [`CLAUDE.md`](CLAUDE.md) and [`PROTOCOL.md`](PROTOCOL.md).
